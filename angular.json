@@ -23,7 +23,7 @@
                         "baseHref": "/",
                         "sourceMap": true,
                         "optimization": false,
-                        "outputPath": "dist/validation-framework-browser-ui",
+                        "outputPath": "dist/validation-browser",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": "src/polyfills.ts",
