@@ -32,7 +32,7 @@ import {LeftSidebarComponent} from './components/left-sidebar/left-sidebar.compo
 import {TextFilterPipe} from './pipes/text-filter/text-filter.pipe';
 import {ConceptService} from './services/concept/concept.service';
 import {MainViewComponent} from './components/main-view/main-view.component';
-import {ReleaseService} from "./services/release/release.service";
+import {ReleaseService} from './services/release/release.service';
 import { GroupFilterPipe } from './pipes/group-filter/group-filter.pipe';
 import { SeverityFilterPipe } from './pipes/severity-filter/severity-filter.pipe';
 import { TypeFilterPipe } from './pipes/type-filter/type-filter.pipe';

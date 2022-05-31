@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ToastrService} from 'ngx-toastr';
 import {ModalService} from '../../services/modal/modal.service';
-import {ReleaseService} from "../../services/release/release.service";
-import {Subscription} from "rxjs";
-import {FilterService} from "../../services/filter/filter.service";
+import {ReleaseService} from '../../services/release/release.service';
+import {Subscription} from 'rxjs';
+import {FilterService} from '../../services/filter/filter.service';
 
 @Component({
     selector: 'app-main-view',

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ConceptService} from '../../services/concept/concept.service';
-import {ReleaseService} from "../../services/release/release.service";
-import {FilterService} from "../../services/filter/filter.service";
+import {ReleaseService} from '../../services/release/release.service';
+import {FilterService} from '../../services/filter/filter.service';
 
 @Component({
     selector: 'app-left-sidebar',
@@ -56,8 +56,6 @@ export class LeftSidebarComponent implements OnInit {
     }
 
     setGroup(group: string): void {
-        // console.log('group: ', group);
-        // console.log('this.group: ', this.group);
         if (!this.group.includes(group)) {
             this.group.push(group);
             this.filterService.setGroup(this.group);
@@ -68,7 +66,7 @@ export class LeftSidebarComponent implements OnInit {
     }
 
     groupIncludes(name): boolean {
-        if(this.group) {
+        if (this.group) {
             return !!this.group.includes(name);
         }
     }
