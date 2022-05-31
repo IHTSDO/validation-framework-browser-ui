@@ -1,0 +1,85 @@
+@import '~src/variables.scss';
+
+div.main-view {
+    position: absolute;
+    top: 5rem;
+    left: 32rem;
+    right: 0;
+    bottom: 4rem;
+    overflow: scroll;
+
+    div.top-area {
+        background-color: darken($gallery-white, 5%);
+        border-bottom: 1px solid $alto-white;
+
+        input {
+            border: 1px solid $ghost-grey;
+        }
+
+        span.count {
+            font-size: 1.4rem;
+            color: $blumine;
+        }
+    }
+}
+
+$spring-rain: #95BB95;
+$london-hue: #B695BB;
+$vanilla: #BBAE95;
+$dull-lavender: #A0A5E3;
+
+.spring-rain {
+    background-color: $spring-rain;
+
+    &:hover {
+        background-color: darken($spring-rain, 10%);
+    }
+}
+
+.london-hue {
+    background-color: $london-hue;
+
+    &:hover {
+        background-color: darken($london-hue, 10%);
+    }
+}
+
+.vanilla {
+    background-color: $vanilla;
+
+    &:hover {
+        background-color: darken($vanilla, 10%);
+    }
+}
+
+.dull-lavender {
+    background-color: $dull-lavender;
+
+    &:hover {
+        background-color: darken($dull-lavender, 10%);
+    }
+}
+
+.ghost-grey {
+    background-color: $ghost-grey;
+
+    &:hover {
+        background-color: darken($ghost-grey, 10%);
+    }
+}
+
+.spring-rain-border {
+    border-left: solid 5px $spring-rain;
+}
+
+.london-hue-border {
+    border-left: solid 5px $london-hue;
+}
+
+.vanilla-border {
+    border-left: solid 5px $vanilla;
+}
+
+.dull-lavender-border {
+    border-left: solid 5px $dull-lavender;
+}

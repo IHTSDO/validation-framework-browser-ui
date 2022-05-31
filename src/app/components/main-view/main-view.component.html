@@ -1,0 +1,62 @@
+<div class="main-view">
+    <div class="top-area">
+        <h2 class="p-3 m-0">Rules<span *ngIf="assertions" class="px-3 count">{{(assertions | textFilter:textFilter | groupFilter:group | severityFilter:severity | typeFilter:type).length}} assertions</span></h2>
+        <!--    <p>GROUP: <span *ngFor="let g of group">{{g}}, </span></p>-->
+        <!--    <p>ARRAY: {{group | json}}</p>-->
+        <div class="row g-0 px-3">
+            <input type="search" class="searchbar rounded-3 py-2 px-3" [(ngModel)]="textFilter" placeholder="Search...">
+        </div>
+        <div class="row g-0 p-2">
+            <div class="col m-2">
+                <button class="btn w-100" (click)="setType('DROOL_RULES')"
+                        [class.spring-rain]="type === 'DROOL_RULES' || type === undefined"
+                        [class.ghost-grey]="type !== 'DROOL_RULES' && type !== undefined">DROOLS</button>
+            </div>
+            <div class="col m-2">
+                <button class="btn w-100" (click)="setType('SQL')"
+                        [class.london-hue]="type === 'SQL' || type === undefined"
+                        [class.ghost-grey]="type !== 'SQL' && type !== undefined">SQL</button>
+            </div>
+<!--            <div class="col m-2">-->
+<!--                <button class="btn w-100" (click)="setType('MRCM')"-->
+<!--                        [class.vanilla]="type === 'MRCM' || type === undefined"-->
+<!--                        [class.ghost-grey]="type !== 'MRCM' && type !== undefined">MRCM</button>-->
+<!--            </div>-->
+            <div class="col m-2">
+                <button class="btn w-100" (click)="setType('TRACEABILITY')"
+                        [class.dull-lavender]="type === 'TRACEABILITY' || type === undefined"
+                        [class.ghost-grey]="type !== 'TRACEABILITY' && type !== undefined">TRACEABILITY</button>
+            </div>
+        </div>
+    </div>
+    <div class="p-3">
+        <table class="table table-striped table-hover">
+            <tbody>
+            <tr *ngFor="let assertion of assertions | textFilter:textFilter | groupFilter:group | severityFilter:severity | typeFilter:type">
+                <td [class.spring-rain-border]="assertion.type === 'DROOL_RULES'"
+                    [class.london-hue-border]="assertion.type === 'SQL'"
+                    [class.vanilla-border]="assertion.type === 'MRCM'"
+                    [class.dull-lavender-border]="assertion.type === 'TRACEABILITY'">{{assertion.uuid}}</td>
+                <td [class.spring-rain-border]="assertion.type === 'DROOL_RULES'"
+                    [class.london-hue-border]="assertion.type === 'SQL'"
+                    [class.vanilla-border]="assertion.type === 'MRCM'"
+                    [class.dull-lavender-border]="assertion.type === 'TRACEABILITY'">{{assertion.assertionText}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<app-modal id="example-modal" class="modal">
+    <div header><h3 class="mb-0">Example Modal<span class="px-2"></span></h3></div>
+    <div body>
+        <p>You can press some buttons in the footer if you like.</p>
+        <p>For example you could press SAVE or DELETE, but they don't really do anything for this example.</p>
+    </div>
+    <div footer>
+        <button type="button" class="btn" (click)="closeModal('example-modal')">CANCEL</button>
+        <button type="button" class="btn reject ms-3" (click)="delete(); closeModal('example-modal')">DELETE</button>
+        <button type="button" class="btn accept ms-3" (click)="save(); closeModal('example-modal')">SAVE</button>
+    </div>
+</app-modal>
+

@@ -1,0 +1,13 @@
+<nav id="sidebar" class="footer-margin">
+    <div class="header row g-0">
+        <h3 class="p-3 mb-0">Severity</h3>
+    </div>
+    <a class="py-2 px-3 d-block filter" (click)="setSeverity('WARNING')" [class.active]="severity === 'WARNING'">Warning</a>
+    <a class="py-2 px-3 d-block filter" (click)="setSeverity('ERROR')" [class.active]="severity === 'ERROR'">Error</a>
+    <div class="header row g-0">
+        <h3 class="p-3 mb-0">Assertion Group</h3>
+    </div>
+    <ng-container *ngFor="let release of releases">
+        <a class="py-2 px-3 d-block filter" (click)="setGroup(release.name)" [class.active]="groupIncludes(release.name)">{{release?.name}}</a>
+    </ng-container>
+</nav>
