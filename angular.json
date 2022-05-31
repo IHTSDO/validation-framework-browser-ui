@@ -61,7 +61,7 @@
                                     "with": "src/environments/environment.prod.ts"
                                 }
                             ],
-                            "baseHref": "/",
+                            "baseHref": "/validation-browser/",
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
