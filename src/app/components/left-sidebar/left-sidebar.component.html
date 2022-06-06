@@ -7,7 +7,7 @@
     <div class="header row g-0">
         <h3 class="p-3 mb-0">Assertion Group</h3>
     </div>
-    <ng-container *ngFor="let release of releases">
+    <ng-container *ngFor="let release of releases | alphabetical:'name'">
         <a class="py-2 px-3 d-block filter" (click)="setGroup(release.name)" [class.active]="groupIncludes(release.name)">{{release?.name}}</a>
     </ng-container>
 </nav>

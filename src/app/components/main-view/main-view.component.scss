@@ -21,6 +21,16 @@ div.main-view {
             color: $blumine;
         }
     }
+
+    table {
+        tbody {
+            tr {
+                td:first-child {
+                    width: 32rem;
+                }
+            }
+        }
+    }
 }
 
 $spring-rain: #95BB95;

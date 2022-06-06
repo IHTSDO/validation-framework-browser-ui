@@ -4,11 +4,22 @@ import {ModalService} from '../../services/modal/modal.service';
 import {ReleaseService} from '../../services/release/release.service';
 import {Subscription} from 'rxjs';
 import {FilterService} from '../../services/filter/filter.service';
+import {saveAs} from "file-saver";
+import {TextFilterPipe} from "../../pipes/text-filter/text-filter.pipe";
+import {GroupFilterPipe} from "../../pipes/group-filter/group-filter.pipe";
+import {SeverityFilterPipe} from "../../pipes/severity-filter/severity-filter.pipe";
+import {TypeFilterPipe} from "../../pipes/type-filter/type-filter.pipe";
 
 @Component({
     selector: 'app-main-view',
     templateUrl: './main-view.component.html',
-    styleUrls: ['./main-view.component.scss']
+    styleUrls: ['./main-view.component.scss'],
+    providers: [
+        TextFilterPipe,
+        GroupFilterPipe,
+        SeverityFilterPipe,
+        TypeFilterPipe
+    ]
 })
 export class MainViewComponent implements OnInit {
 
@@ -32,7 +43,11 @@ export class MainViewComponent implements OnInit {
     constructor(private toastr: ToastrService,
                 private modalService: ModalService,
                 private releaseService: ReleaseService,
-                private filterService: FilterService) {
+                private filterService: FilterService,
+                private textPipe: TextFilterPipe,
+                private groupPipe: GroupFilterPipe,
+                private severityPipe: SeverityFilterPipe,
+                private typePipe: TypeFilterPipe) {
         this.releasesNotesSubscription = this.releaseService.getReleases().subscribe( data => this.releases = data);
         this.assertionsNotesSubscription = this.releaseService.getAssertions().subscribe( data => this.assertions = data);
         this.severityNotesSubscription = this.filterService.getSeverity().subscribe( data => this.severity = data);
@@ -60,6 +75,36 @@ export class MainViewComponent implements OnInit {
 
     closeModal(id: string): void {
         this.modalService.close(id);
+    }
+
+    downloadCSV(): void {
+        const csvContent = this.createCSV(this.assertions).map(e => e.join(",")).join("\n");
+
+        const data: Blob = new Blob([csvContent], {
+            type: "text/csv;charset=utf-8"
+        });
+
+        saveAs(data, "assertions.csv");
+    }
+
+    createCSV(assertions): any {
+        assertions = this.textPipe.transform(assertions, this.textFilter);
+        assertions = this.groupPipe.transform(assertions, this.group);
+        assertions = this.severityPipe.transform(assertions, this.severity);
+        assertions = this.typePipe.transform(assertions, this.type);
+
+        const csvArray = [];
+
+        csvArray.push(['UUID', 'Description'])
+
+        assertions.forEach(assertion => {
+            let row = [];
+            row.push(assertion.uuid);
+            row.push(assertion.assertionText);
+            csvArray.push(row);
+        });
+
+        return csvArray;
     }
 
     delete(): void {

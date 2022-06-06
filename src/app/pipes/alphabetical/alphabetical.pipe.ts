@@ -11,11 +11,11 @@ export class AlphabeticalPipe implements PipeTransform {
         }
 
         items = items.sort(function (a, b) {
-            if (a[key] > b[key]) {
+            if (a[key].toLowerCase() > b[key].toLowerCase()) {
                 return 1;
             }
 
-            if (a[key] < b[key]) {
+            if (a[key].toLowerCase() < b[key].toLowerCase()) {
                 return -1;
             }
         });

@@ -1,8 +1,11 @@
 <div class="main-view">
     <div class="top-area">
-        <h2 class="p-3 m-0">Rules<span *ngIf="assertions" class="px-3 count">{{(assertions | textFilter:textFilter | groupFilter:group | severityFilter:severity | typeFilter:type).length}} assertions</span></h2>
-        <!--    <p>GROUP: <span *ngFor="let g of group">{{g}}, </span></p>-->
-        <!--    <p>ARRAY: {{group | json}}</p>-->
+        <div class="row g-0 p-2">
+            <h2 class="col p-3 m-0">Rules<span *ngIf="assertions" class="px-3 count">{{(assertions | textFilter:textFilter | groupFilter:group | severityFilter:severity | typeFilter:type).length}} assertions</span></h2>
+            <div class="col-1 p-3">
+                <button class="btn bg-wisteria bg-wisteria-hover float-end" (click)="downloadCSV()">DOWNLOAD</button>
+            </div>
+        </div>
         <div class="row g-0 px-3">
             <input type="search" class="searchbar rounded-3 py-2 px-3" [(ngModel)]="textFilter" placeholder="Search...">
         </div>
