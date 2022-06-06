@@ -95,10 +95,10 @@ export class MainViewComponent implements OnInit {
 
         const csvArray = [];
 
-        csvArray.push(['UUID', 'Description'])
+        csvArray.push(['UUID', 'Description']);
 
         assertions.forEach(assertion => {
-            let row = [];
+            const row = [];
             row.push(assertion.uuid);
             row.push(assertion.assertionText);
             csvArray.push(row);
