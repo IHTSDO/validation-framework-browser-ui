@@ -2,4 +2,55 @@
     <a class="px-3 text-ghost-grey" href="http://www.snomed.org/" target="_blank">Copyright © {{year}} SNOMED International</a>
 <!--    <a class="px-3 text-ghost-grey" href="https://confluence.ihtsdotools.org/display/SIAPUG/SNOMED+International+Authoring+Platform+User+Guide" target="_blank">User Guide</a>-->
     <a class="px-3 text-ghost-grey" href="http://www.snomed.org/contact-us/" target="_blank">Contact Us</a>
+    <a class="px-3 text-ghost-grey float-end" role='button' (click)="modalService.open('help-modal')">Help</a>
 </footer>
+<app-modal id="help-modal" class="modal help-modal" [size]="'xl'">
+    <h3 header class="mb-0">Assertion Group Help</h3>
+    <ng-container body>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Group</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">common-authoring</th>
+              <td>This group is used for the application of Drools rules to all extensions (including International) within authoring-platform validation.</td>
+            </tr>
+            <tr>
+              <th scope="row">int-authoring</th>
+              <td>This group is used for the application of International only Drools rules (those that are not applicable to national extensions) within authoring-platform validation.</td>
+            </tr>
+            <tr>
+              <th scope="row">xx-authoring</th>
+              <td>Prefixed with a 2 letter county code (e.g. NL) - these groups are used for the application of Extension specific Drools rules within authoring-platform validation.</td>
+            </tr>
+            <tr>
+              <th scope="row">component-centric</th>
+              <td>This SQL assertion group contains rules validating SNOMED components within the given content. This includes relationships, descriptions, refset entries, concepts and more.</td>
+            </tr>
+            <tr>
+              <th scope="row">release-type</th>
+              <td>This SQL assertion group contains rules validating release integrity within the given content. It is concerned primarily with data continuity, validity of Snapshot and Delta files, and component states (in comparison to prior states).</td>
+            </tr>
+            <tr>
+              <th scope="row">release-type</th>
+              <td>This SQL assertion group contains rules validating file integrity within the output RF2 files.</td>
+            </tr>
+            <tr>
+              <th scope="row">*product*Edition</th>
+              <td>These SQL assertion groups are supersets of the above groups, intended for use in edition validation and release operations by the Release Manager.</td>
+            </tr>
+            <tr>
+              <th scope="row">Other</th>
+              <td>These SQL assertion groups are supersets of the above groups, intended for use in the validation of specific products. Examples include LOINC and GMDN.</td>
+            </tr>
+          </tbody>
+        </table>
+    </ng-container>
+    <div footer>
+        <button type="button" class="btn btn" (click)="modalService.close('help-modal')">CLOSE</button>
+    </div>
+</app-modal>
