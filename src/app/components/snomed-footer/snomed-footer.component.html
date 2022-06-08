@@ -17,35 +17,35 @@
           <tbody>
             <tr>
               <th scope="row">common-authoring</th>
-              <td>This group is used for the application of Drools rules to all extensions (including International) within authoring-platform validation.</td>
+              <td>This Drools assertion group is used for validation within the Authoring Platform, and applies to all extensions, including International.</td>
             </tr>
             <tr>
               <th scope="row">int-authoring</th>
-              <td>This group is used for the application of International only Drools rules (those that are not applicable to national extensions) within authoring-platform validation.</td>
+              <td>This Drools assertion group is used for validation within the Authoring Platform, and applies only to International, and not to national extensions.</td>
             </tr>
             <tr>
               <th scope="row">xx-authoring</th>
-              <td>Prefixed with a 2 letter county code (e.g. NL) - these groups are used for the application of Extension specific Drools rules within authoring-platform validation.</td>
+              <td>Prefixed with a 2 letter county code (e.g. NL) - these Drools assertion groups are used for extension specific validation within the Authoring Platform.</td>
             </tr>
             <tr>
               <th scope="row">component-centric</th>
-              <td>This SQL assertion group contains rules validating SNOMED components within the given content. This includes relationships, descriptions, refset entries, concepts and more.</td>
+              <td>This SQL assertion group validates SNOMED CT components. For example, relationships, descriptions, refset entries and concepts.</td>
             </tr>
             <tr>
               <th scope="row">release-type</th>
-              <td>This SQL assertion group contains rules validating release integrity within the given content. It is concerned primarily with data continuity, validity of Snapshot and Delta files, and component states (in comparison to prior states).</td>
+              <td>This SQL assertion group validates SNOMED CT release integrity. It is concerned primarily with data continuity, validity of Snapshot and Delta files, and component states (in comparison to prior states).</td>
             </tr>
             <tr>
-              <th scope="row">release-type</th>
-              <td>This SQL assertion group contains rules validating file integrity within the output RF2 files.</td>
+              <th scope="row">file-centric-type</th>
+              <td>This SQL assertion group validates file integrity within the output RF2 files.</td>
             </tr>
             <tr>
-              <th scope="row">*product*Edition</th>
-              <td>These SQL assertion groups are supersets of the above groups, intended for use in edition validation and release operations by the Release Manager.</td>
+              <th scope="row">xxEdition</th>
+              <td>Prefixed with a product name, these SQL assertion groups are supersets of the above, intended for use in edition validation and release operations by the Release Manager.</td>
             </tr>
             <tr>
               <th scope="row">Other</th>
-              <td>These SQL assertion groups are supersets of the above groups, intended for use in the validation of specific products. Examples include LOINC and GMDN.</td>
+              <td>These SQL assertion groups are supersets of the above groups, intended for use in the validation of specific products, for example LOINC and GMDN.</td>
             </tr>
           </tbody>
         </table>
