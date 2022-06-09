@@ -2,4 +2,57 @@
     <a class="px-3 text-ghost-grey" href="http://www.snomed.org/" target="_blank">Copyright © {{year}} SNOMED International</a>
 <!--    <a class="px-3 text-ghost-grey" href="https://confluence.ihtsdotools.org/display/SIAPUG/SNOMED+International+Authoring+Platform+User+Guide" target="_blank">User Guide</a>-->
     <a class="px-3 text-ghost-grey" href="http://www.snomed.org/contact-us/" target="_blank">Contact Us</a>
+    <a class="px-3 text-ghost-grey float-end" role='button' (click)="modalService.open('help-modal')">Help</a>
 </footer>
+<app-modal id="help-modal" class="modal help-modal" [size]="'xl'">
+    <h3 header class="mb-0">Assertion Group Help</h3>
+    <ng-container body>
+        <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="w-20" scope="col">Group</th>
+                  <th scope="col">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">common-authoring</th>
+                  <td>This Drools assertion group is used for validation within the Authoring Platform, and applies to all extensions, including International.</td>
+                </tr>
+                <tr>
+                  <th scope="row">int-authoring</th>
+                  <td>This Drools assertion group is used for validation within the Authoring Platform, and applies only to International, and not to national extensions.</td>
+                </tr>
+                <tr>
+                  <th scope="row">xx-authoring</th>
+                  <td>Prefixed with a 2 letter county code (e.g. NL) - these Drools assertion groups are used for extension specific validation within the Authoring Platform.</td>
+                </tr>
+                <tr>
+                  <th scope="row">component-centric</th>
+                  <td>This SQL assertion group validates SNOMED CT components. For example, relationships, descriptions, refset entries and concepts.</td>
+                </tr>
+                <tr>
+                  <th scope="row">release-type</th>
+                  <td>This SQL assertion group validates SNOMED CT release integrity. It is concerned primarily with data continuity, validity of Snapshot and Delta files, and component states (in comparison to prior states).</td>
+                </tr>
+                <tr>
+                  <th scope="row">file-centric-type</th>
+                  <td>This SQL assertion group validates file integrity within the output RF2 files.</td>
+                </tr>
+                <tr>
+                  <th scope="row">xxEdition</th>
+                  <td>Prefixed with a product name, these SQL assertion groups are supersets of the above, intended for use in edition validation and release operations by the Release Manager.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Other</th>
+                  <td>These SQL assertion groups are supersets of the above groups, intended for use in the validation of specific products, for example LOINC and GMDN.</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+    </ng-container>
+    <div footer>
+        <button type="button" class="btn btn" (click)="modalService.close('help-modal')">CLOSE</button>
+    </div>
+</app-modal>
