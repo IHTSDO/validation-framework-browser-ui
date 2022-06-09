@@ -78,33 +78,33 @@ export class MainViewComponent implements OnInit {
     }
 
     downloadCSV(): void {
-        const csvContent = this.createCSV(this.assertions).map(e => e.join(",")).join("\n");
+        const tsvContent = this.createTSV(this.assertions).map(e => e.join("\t")).join("\n")
 
-        const data: Blob = new Blob([csvContent], {
-            type: "text/csv;charset=utf-8"
+        const data: Blob = new Blob([tsvContent], {
+            type: "text/tsv;charset=utf-8"
         });
 
-        saveAs(data, "assertions.csv");
+        saveAs(data, "assertions.tsv");
     }
 
-    createCSV(assertions): any {
+    createTSV(assertions): any {
         assertions = this.textPipe.transform(assertions, this.textFilter);
         assertions = this.groupPipe.transform(assertions, this.group);
         assertions = this.severityPipe.transform(assertions, this.severity);
         assertions = this.typePipe.transform(assertions, this.type);
 
-        const csvArray = [];
+        const tsvArray = [];
 
-        csvArray.push(['UUID', 'Description']);
+        tsvArray.push(['UUID', 'Description']);
 
         assertions.forEach(assertion => {
             const row = [];
             row.push(assertion.uuid);
             row.push(assertion.assertionText);
-            csvArray.push(row);
+            tsvArray.push(row);
         });
 
-        return csvArray;
+        return tsvArray;
     }
 
     delete(): void {
