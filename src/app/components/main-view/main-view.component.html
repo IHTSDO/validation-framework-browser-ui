@@ -1,9 +1,9 @@
 <div class="main-view">
     <div class="top-area">
-        <div class="row g-0 p-2">
+        <div class="row g-0">
             <h2 class="col p-3 m-0">Rules<span *ngIf="assertions" class="px-3 count">{{(assertions | textFilter:textFilter | groupFilter:group | severityFilter:severity | typeFilter:type).length}} assertions</span></h2>
             <div class="col-1 p-3">
-                <button class="btn bg-wisteria bg-wisteria-hover float-end" (click)="downloadCSV()">DOWNLOAD</button>
+                <button class="btn bg-wisteria bg-wisteria-hover float-end" (click)="downloadTSV()">DOWNLOAD</button>
             </div>
         </div>
         <div class="row g-0 px-3">

@@ -1,11 +1,14 @@
 <nav id="sidebar" class="footer-margin">
-    <div class="header row g-0">
-        <h3 class="p-3 mb-0">Severity</h3>
+    <div class="header row g-0 position-relative">
+        <h3 class="p-3 mb-0 filter-title">Severity</h3>
+        <span class="clear-span">
+            <button class="col btn bg-wisteria bg-wisteria-hover" (click)="reset()">RESET</button>
+        </span>
     </div>
     <a class="py-2 px-3 d-block filter" (click)="setSeverity('WARNING')" [class.active]="severity === 'WARNING'">Warning</a>
     <a class="py-2 px-3 d-block filter" (click)="setSeverity('ERROR')" [class.active]="severity === 'ERROR'">Error</a>
     <div class="header row g-0">
-        <h3 class="p-3 mb-0">Assertion Group</h3>
+        <h3 class="p-3 mb-0 filter-title">Assertion Group</h3>
     </div>
     <ng-container *ngFor="let release of releases | alphabetical:'name'">
         <a class="py-2 px-3 d-block filter" (click)="setGroup(release.name)" [class.active]="groupIncludes(release.name)">{{release?.name}}</a>

@@ -27,12 +27,12 @@ export class MainViewComponent implements OnInit {
         closeButton: true
     };
 
-    textFilter: string;
-
     releases: any;
     releasesNotesSubscription: Subscription;
     assertions: any;
     assertionsNotesSubscription: Subscription;
+    textFilter: any;
+    textFilterSubscription: Subscription;
     severity: any;
     severityNotesSubscription: Subscription;
     group: any;
@@ -53,6 +53,7 @@ export class MainViewComponent implements OnInit {
         this.severityNotesSubscription = this.filterService.getSeverity().subscribe( data => this.severity = data);
         this.groupNotesSubscription = this.filterService.getGroup().subscribe( data => this.group = data);
         this.typeSubscription = this.filterService.getType().subscribe( data => this.type = data);
+        this.textFilterSubscription = this.filterService.getTextFilter().subscribe(data => this.textFilter = data);
     }
 
     ngOnInit(): void {
@@ -77,7 +78,7 @@ export class MainViewComponent implements OnInit {
         this.modalService.close(id);
     }
 
-    downloadCSV(): void {
+    downloadTSV(): void {
         const tsvContent = this.createTSV(this.assertions).map(e => e.join("\t")).join("\n")
 
         const data: Blob = new Blob([tsvContent], {

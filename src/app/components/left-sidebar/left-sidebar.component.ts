@@ -11,6 +11,8 @@ import {FilterService} from '../../services/filter/filter.service';
 })
 export class LeftSidebarComponent implements OnInit {
 
+    textFilter: any;
+    textFilterSubscription: Subscription;
     releases: any;
     releasesNotesSubscription: Subscription;
     severity: any;
@@ -35,6 +37,7 @@ export class LeftSidebarComponent implements OnInit {
         this.releasesNotesSubscription = this.releaseService.getReleases().subscribe( data => this.releases = data);
         this.severityNotesSubscription = this.filterService.getSeverity().subscribe( data => this.severity = data);
         this.groupNotesSubscription = this.filterService.getGroup().subscribe( data => this.group = data);
+        this.textFilterSubscription = this.filterService.getTextFilter().subscribe(data => this.textFilter = data);
     }
 
     ngOnInit() {
@@ -69,5 +72,12 @@ export class LeftSidebarComponent implements OnInit {
         if (this.group) {
             return !!this.group.includes(name);
         }
+    }
+
+    reset(): void {
+        this.filterService.setSeverity(undefined);
+        this.filterService.setType(undefined);
+        this.filterService.setGroup([]);
+        this.filterService.setTextFilter('');
     }
 }
