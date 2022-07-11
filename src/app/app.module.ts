@@ -36,6 +36,7 @@ import {ReleaseService} from './services/release/release.service';
 import { GroupFilterPipe } from './pipes/group-filter/group-filter.pipe';
 import { SeverityFilterPipe } from './pipes/severity-filter/severity-filter.pipe';
 import { TypeFilterPipe } from './pipes/type-filter/type-filter.pipe';
+import { AuthoringPipe } from './pipes/authoring-filter/authoring.pipe';
 
 // SERVICE IMPORTS
 
@@ -54,7 +55,8 @@ import { TypeFilterPipe } from './pipes/type-filter/type-filter.pipe';
         MainViewComponent,
         GroupFilterPipe,
         SeverityFilterPipe,
-        TypeFilterPipe
+        TypeFilterPipe,
+        AuthoringPipe
     ],
     imports: [
         BrowserModule,

@@ -39,11 +39,20 @@
                 <td [class.spring-rain-border]="assertion.type === 'DROOL_RULES'"
                     [class.london-hue-border]="assertion.type === 'SQL'"
                     [class.vanilla-border]="assertion.type === 'MRCM'"
-                    [class.dull-lavender-border]="assertion.type === 'TRACEABILITY'">{{assertion.uuid}}</td>
+                    [class.dull-lavender-border]="assertion.type === 'TRACEABILITY'">
+                    {{assertion.uuid}}
+                </td>
                 <td [class.spring-rain-border]="assertion.type === 'DROOL_RULES'"
                     [class.london-hue-border]="assertion.type === 'SQL'"
                     [class.vanilla-border]="assertion.type === 'MRCM'"
-                    [class.dull-lavender-border]="assertion.type === 'TRACEABILITY'">{{assertion.assertionText}}</td>
+                    [class.dull-lavender-border]="assertion.type === 'TRACEABILITY'">
+                    {{assertion.assertionText}}
+                    <span *ngIf="assertion.severity && assertion.severity === 'WARNING'" class="marker orange d-inline-block px-2 m-1">WARNING</span>
+                    <span *ngIf="assertion.severity && assertion.severity === 'ERROR'" class="marker red d-inline-block px-2 m-1">ERROR</span>
+                    <ng-container *ngFor="let authoring of releases | authoring">
+                        <span *ngIf="assertion.groups && assertion.groups.includes(authoring.name)" class="marker blue d-inline-block px-2 m-1">{{authoring.name}}</span>
+                    </ng-container>
+                </td>
             </tr>
             </tbody>
         </table>

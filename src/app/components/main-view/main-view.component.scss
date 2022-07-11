@@ -25,8 +25,33 @@ div.main-view {
     table {
         tbody {
             tr {
-                td:first-child {
-                    width: 32rem;
+                td {
+                    &:first-child {
+                        width: 32rem;
+                    }
+
+                    span.marker {
+                        font-size: 1rem;
+                        border-radius: 1rem;
+                        position: relative;
+                        cursor: default;
+
+                        &.blue {
+                            background-color: lighten($cerulean, 30%);
+                        }
+
+                        &.green {
+                            background-color: lighten($fruit-salad, 40%);
+                        }
+
+                        &.red {
+                            background-color: lighten($mandy, 30%);
+                        }
+
+                        &.orange {
+                            background-color: lighten($sea-buckthorn, 30%);
+                        }
+                    }
                 }
             }
         }

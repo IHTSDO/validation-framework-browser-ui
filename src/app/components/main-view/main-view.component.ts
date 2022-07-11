@@ -27,6 +27,8 @@ export class MainViewComponent implements OnInit {
         closeButton: true
     };
 
+    authoringList = [];
+
     releases: any;
     releasesNotesSubscription: Subscription;
     assertions: any;
