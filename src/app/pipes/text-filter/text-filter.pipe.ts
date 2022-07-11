@@ -14,11 +14,28 @@ export class TextFilterPipe implements PipeTransform {
             return items;
         }
 
-        searchText = searchText.toLowerCase();
-        items = items.filter(item => {
-            return item.assertionText.toLowerCase().includes(searchText);
+        let splitArray = searchText.split(' ');
+        splitArray = splitArray.filter(item => item !== '');
+
+        const response = [];
+
+        items.forEach(item => {
+            splitArray.forEach(split => {
+                if (item.uuid.toLowerCase().includes(split) && !response.includes(item)) {
+                    response.push(item);
+                }
+            });
         });
-        return items;
+
+        items.forEach(item => {
+            splitArray.forEach(split => {
+                if (item.assertionText.toLowerCase().includes(split) && !response.includes(item)) {
+                    response.push(item);
+                }
+            });
+        });
+
+        return response;
     }
 
 }
