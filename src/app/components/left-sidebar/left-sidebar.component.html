@@ -11,6 +11,10 @@
         <h4 class="p-3 mb-0 filter-title">Assertion Group</h4>
     </div>
     <ng-container *ngFor="let release of releases | alphabetical:'name'">
-        <a class="py-2 px-3 d-block filter" (click)="setGroup(release.name)" [class.active]="groupIncludes(release.name)">{{release?.name}}</a>
+        <a class="py-2 px-3 d-block filter" (click)="setGroup(release.name)" [class.active]="groupIncludes(release.name)">
+            {{release?.name}}
+            <span *ngIf="containsDrools(release?.name)" class="marker green d-inline-block px-2 m-1">DRO</span>
+            <span *ngIf="containsSQL(release?.name)" class="marker purple d-inline-block px-2 m-1">SQL</span>
+        </a>
     </ng-container>
 </nav>
