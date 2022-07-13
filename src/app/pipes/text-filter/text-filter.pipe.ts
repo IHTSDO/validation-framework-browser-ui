@@ -20,19 +20,33 @@ export class TextFilterPipe implements PipeTransform {
         const response = [];
 
         items.forEach(item => {
-            splitArray.forEach(split => {
-                if (item.uuid.toLowerCase().includes(split) && !response.includes(item)) {
-                    response.push(item);
+            let valid = true;
+
+            for (let split of splitArray) {
+                if (!item.uuid.toLowerCase().includes(split.toLowerCase())) {
+                    valid = false;
+                    break;
                 }
-            });
+            }
+
+            if (valid && !response.includes(item)) {
+                response.push(item);
+            }
         });
 
         items.forEach(item => {
-            splitArray.forEach(split => {
-                if (item.assertionText.toLowerCase().includes(split) && !response.includes(item)) {
-                    response.push(item);
+            let valid = true;
+
+            for (let split of splitArray) {
+                if (!item.assertionText.toLowerCase().includes(split.toLowerCase())) {
+                    valid = false;
+                    break;
                 }
-            });
+            }
+
+            if (valid && !response.includes(item)) {
+                response.push(item);
+            }
         });
 
         return response;

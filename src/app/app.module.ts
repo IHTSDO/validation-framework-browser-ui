@@ -37,6 +37,7 @@ import { GroupFilterPipe } from './pipes/group-filter/group-filter.pipe';
 import { SeverityFilterPipe } from './pipes/severity-filter/severity-filter.pipe';
 import { TypeFilterPipe } from './pipes/type-filter/type-filter.pipe';
 import { AuthoringPipe } from './pipes/authoring-filter/authoring.pipe';
+import { EditionPipe } from './pipes/edition/edition.pipe';
 
 // SERVICE IMPORTS
 
@@ -56,7 +57,8 @@ import { AuthoringPipe } from './pipes/authoring-filter/authoring.pipe';
         GroupFilterPipe,
         SeverityFilterPipe,
         TypeFilterPipe,
-        AuthoringPipe
+        AuthoringPipe,
+        EditionPipe
     ],
     imports: [
         BrowserModule,

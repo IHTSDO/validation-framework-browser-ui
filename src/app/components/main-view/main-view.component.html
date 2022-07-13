@@ -50,7 +50,11 @@
                     <span *ngIf="assertion.severity && assertion.severity === 'WARNING'" class="marker orange d-inline-block px-2 m-1">WARNING</span>
                     <span *ngIf="assertion.severity && assertion.severity === 'ERROR'" class="marker red d-inline-block px-2 m-1">ERROR</span>
                     <ng-container *ngFor="let authoring of releases | authoring">
-                        <span *ngIf="assertion.groups && assertion.groups.includes(authoring.name)" class="marker blue d-inline-block px-2 m-1">{{authoring.name}}</span>
+                        <span *ngIf="assertion.groups && assertion.groups.includes(authoring.name)" class="marker blue d-inline-block px-2 m-1">{{authoring.name.substr(0, authoring.name.indexOf('-')) | uppercase}}</span>
+                    </ng-container>
+                    <ng-container *ngFor="let edition of releases | edition">
+<!--                        <span *ngIf="assertion.groups && assertion.groups.includes(edition.name)" class="marker green d-inline-block px-2 m-1">{{edition.name.substr(0, edition.name.indexOf('Edition')) | uppercase}}</span>-->
+<!--                        <span *ngIf="assertion.groups && assertion.groups.includes(edition.name)" class="marker green d-inline-block px-2 m-1">{{edition.name.substr(0, 2) | uppercase}}</span>-->
                     </ng-container>
                 </td>
                 <td *ngIf="assertion.url"><i class="fas fa-external-link-alt" (click)="goToUrl(assertion)"></i></td>
