@@ -53,6 +53,7 @@
                         <span *ngIf="assertion.groups && assertion.groups.includes(authoring.name)" class="marker blue d-inline-block px-2 m-1">{{authoring.name}}</span>
                     </ng-container>
                 </td>
+                <td *ngIf="assertion.url"><i class="fas fa-external-link-alt" (click)="goToUrl(assertion)"></i></td>
             </tr>
             </tbody>
         </table>

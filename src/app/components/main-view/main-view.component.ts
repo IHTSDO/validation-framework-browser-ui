@@ -89,6 +89,10 @@ export class MainViewComponent implements OnInit {
 
         saveAs(data, "assertions.tsv");
     }
+    
+    goToUrl(url: any): void {
+        window.open(url.url, '_blank').focus();
+    }
 
     createTSV(assertions): any {
         assertions = this.textPipe.transform(assertions, this.textFilter);
