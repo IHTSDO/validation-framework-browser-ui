@@ -38,7 +38,7 @@ export class TextFilterPipe implements PipeTransform {
             let valid = true;
 
             for (let split of splitArray) {
-                if (!item.assertionText.toLowerCase().includes(split.toLowerCase())) {
+                if (!item.assertionText.toLowerCase().startsWith(split.toLowerCase()) && !item.assertionText.toLowerCase().includes(' ' + split.toLowerCase())) {
                     valid = false;
                     break;
                 }
