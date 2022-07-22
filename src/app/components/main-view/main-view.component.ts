@@ -42,6 +42,8 @@ export class MainViewComponent implements OnInit {
     type: any;
     typeSubscription: Subscription;
 
+    activeAssertion: any;
+
     constructor(private toastr: ToastrService,
                 private modalService: ModalService,
                 private releaseService: ReleaseService,
@@ -89,9 +91,9 @@ export class MainViewComponent implements OnInit {
 
         saveAs(data, "assertions.tsv");
     }
-    
-    goToUrl(url: any): void {
-        window.open(url.url, '_blank').focus();
+
+    goToUrl(assertion: any): void {
+        window.open(assertion.url, '_blank').focus();
     }
 
     createTSV(assertions): any {

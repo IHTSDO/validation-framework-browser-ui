@@ -10,8 +10,21 @@ export class AuthoringPipe implements PipeTransform {
             return [];
         }
 
-        items = items.filter(release => release.name.includes('-authoring'));
-        items = items.filter(release => !release.name.includes('-authoring-without-lang-refsets'));
+        items = items.filter(release => {
+            if (release.name) {
+                return release.name.includes('-authoring');
+            } else {
+                return release.includes('-authoring');
+            }
+        });
+
+        items = items.filter(release => {
+            if (release.name) {
+                return !release.name.includes('-authoring-without-lang-refsets');
+            } else {
+                return !release.includes('-authoring-without-lang-refsets');
+            }
+        });
 
         return items;
     }

@@ -10,7 +10,13 @@ export class EditionPipe implements PipeTransform {
             return [];
         }
 
-        items = items.filter(release => release.name.includes('Edition'));
+        items = items.filter(release => {
+            if (release.name) {
+                return release.name.includes('Edition')
+            } else {
+                return release.includes('Edition');
+            }
+        });
 
         return items;
     }

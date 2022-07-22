@@ -100,19 +100,19 @@ export class LeftSidebarComponent implements OnInit {
         return drools;
     }
 
-    containsSQL(name: string) {
-        let sql = false;
+    contains(name: string, type: string) {
+        let found = false;
 
         if (this.assertions) {
             let filteredAssertions = this.assertions?.filter(assertion => assertion.groups?.includes(name));
 
             filteredAssertions.forEach(assertion => {
-                if (assertion?.type === 'SQL') {
-                    sql = true;
+                if (assertion?.type === type) {
+                    found = true;
                 }
             });
         }
 
-        return sql;
+        return found;
     }
 }
