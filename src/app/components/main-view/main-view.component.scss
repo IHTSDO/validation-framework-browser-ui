@@ -23,7 +23,21 @@ div.main-view {
     }
 
     table {
+        thead {
+            tr {
+                th {
+                    cursor: pointer;
+                    font-weight: 400;
+
+                    span {
+                        color: $bootstrap-dark;
+                    }
+                }
+            }
+        }
         tbody {
+            border-top: 1px;
+
             tr {
                 td {
                     &:first-child {
