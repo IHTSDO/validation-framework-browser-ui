@@ -27,18 +27,24 @@ export class MainViewComponent implements OnInit {
         closeButton: true
     };
 
-    textFilter: string;
-
     releases: any;
     releasesNotesSubscription: Subscription;
     assertions: any;
     assertionsNotesSubscription: Subscription;
+    textFilter: any;
+    textFilterSubscription: Subscription;
     severity: any;
     severityNotesSubscription: Subscription;
     group: any;
     groupNotesSubscription: Subscription;
     type: any;
     typeSubscription: Subscription;
+
+    activeAssertion: any;
+
+    sortKey: string;
+    sortType: string;
+    localAssertions: any;
 
     constructor(private toastr: ToastrService,
                 private modalService: ModalService,
@@ -49,16 +55,42 @@ export class MainViewComponent implements OnInit {
                 private severityPipe: SeverityFilterPipe,
                 private typePipe: TypeFilterPipe) {
         this.releasesNotesSubscription = this.releaseService.getReleases().subscribe( data => this.releases = data);
-        this.assertionsNotesSubscription = this.releaseService.getAssertions().subscribe( data => this.assertions = data);
+        this.assertionsNotesSubscription = this.releaseService.getAssertions().subscribe( data => {
+            this.assertions = data;
+            if (!this.localAssertions) {
+                this.localAssertions = this.cloneObject(data);
+            }
+        });
         this.severityNotesSubscription = this.filterService.getSeverity().subscribe( data => this.severity = data);
         this.groupNotesSubscription = this.filterService.getGroup().subscribe( data => this.group = data);
         this.typeSubscription = this.filterService.getType().subscribe( data => this.type = data);
+        this.textFilterSubscription = this.filterService.getTextFilter().subscribe(data => this.textFilter = data);
     }
 
     ngOnInit(): void {
         this.releaseService.httpGetAssertions().subscribe(data => {
             this.releaseService.setAssertions(data);
         });
+
+        this.sortType = 'default';
+    }
+
+    sortOn(key: string) {
+
+        if (this.sortKey === key) {
+            this.sortKey = key;
+            if (this.sortType === 'default') {
+                this.sortType = 'desc';
+            } else if (this.sortType === 'desc') {
+                this.sortType = 'asc';
+            } else if (this.sortType === 'asc') {
+                this.sortType = 'default';
+                this.localAssertions = this.cloneObject(this.assertions);
+            }
+        } else {
+            this.sortKey = key;
+            this.sortType = 'desc';
+        }
     }
 
     setType(type: string): void {
@@ -77,7 +109,7 @@ export class MainViewComponent implements OnInit {
         this.modalService.close(id);
     }
 
-    downloadCSV(): void {
+    downloadTSV(): void {
         const tsvContent = this.createTSV(this.assertions).map(e => e.join("\t")).join("\n")
 
         const data: Blob = new Blob([tsvContent], {
@@ -85,6 +117,10 @@ export class MainViewComponent implements OnInit {
         });
 
         saveAs(data, "assertions.tsv");
+    }
+
+    goToUrl(assertion: any): void {
+        window.open(assertion.url, '_blank').focus();
     }
 
     createTSV(assertions): any {
@@ -105,6 +141,10 @@ export class MainViewComponent implements OnInit {
         });
 
         return tsvArray;
+    }
+
+    cloneObject(object): any {
+        return JSON.parse(JSON.stringify(object));
     }
 
     delete(): void {

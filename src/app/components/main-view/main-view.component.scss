@@ -23,10 +23,86 @@ div.main-view {
     }
 
     table {
-        tbody {
+        thead {
             tr {
-                td:first-child {
-                    width: 32rem;
+                th {
+                    cursor: pointer;
+                    font-weight: 400;
+
+                    span {
+                        color: $bootstrap-dark;
+                    }
+                }
+            }
+        }
+        tbody {
+            border-top: 1px;
+
+            tr {
+                td {
+                    &:first-child {
+                        width: 32rem;
+                    }
+
+                    span.assertion-text {
+                        cursor: pointer;
+
+                        &:hover {
+                            color: darken($cerulean, 20%);
+                        }
+                    }
+
+                    span.marker {
+                        font-size: 1rem;
+                        border-radius: 1rem;
+                        position: relative;
+                        cursor: default;
+
+                        &.blue {
+                            background-color: lighten($cerulean, 30%);
+                        }
+
+                        &.green {
+                            background-color: lighten($fruit-salad, 40%);
+                        }
+
+                        &.red {
+                            background-color: lighten($mandy, 30%);
+                        }
+
+                        &.orange {
+                            background-color: lighten($sea-buckthorn, 30%);
+                        }
+
+                        span.prefix {
+                            border-radius: 1rem;
+
+                            &.blue {
+                                background-color: lighten($cerulean, 20%);
+                            }
+
+                            &.green {
+                                background-color: lighten($fruit-salad, 30%);
+                            }
+
+                            &.red {
+                                background-color: lighten($mandy, 20%);
+                            }
+
+                            &.orange {
+                                background-color: lighten($sea-buckthorn, 20%);
+                            }
+                        }
+                    }
+
+                    i {
+                        cursor: pointer;
+                        color: $bootstrap-dark;
+
+                        &:hover {
+                            color: $cerulean;
+                        }
+                    }
                 }
             }
         }

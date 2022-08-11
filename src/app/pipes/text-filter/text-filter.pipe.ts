@@ -14,11 +14,42 @@ export class TextFilterPipe implements PipeTransform {
             return items;
         }
 
-        searchText = searchText.toLowerCase();
-        items = items.filter(item => {
-            return item.assertionText.toLowerCase().includes(searchText);
+        let splitArray = searchText.split(' ');
+        splitArray = splitArray.filter(item => item !== '');
+
+        const response = [];
+
+        items.forEach(item => {
+            let valid = true;
+
+            for (let split of splitArray) {
+                if (!item.uuid.toLowerCase().includes(split.toLowerCase())) {
+                    valid = false;
+                    break;
+                }
+            }
+
+            if (valid && !response.includes(item)) {
+                response.push(item);
+            }
         });
-        return items;
+
+        items.forEach(item => {
+            let valid = true;
+
+            for (let split of splitArray) {
+                if (!item.assertionText.toLowerCase().startsWith(split.toLowerCase()) && !item.assertionText.toLowerCase().includes(' ' + split.toLowerCase())) {
+                    valid = false;
+                    break;
+                }
+            }
+
+            if (valid && !response.includes(item)) {
+                response.push(item);
+            }
+        });
+
+        return response;
     }
 
 }

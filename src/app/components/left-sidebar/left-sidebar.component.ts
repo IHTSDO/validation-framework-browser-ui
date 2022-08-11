@@ -11,6 +11,10 @@ import {FilterService} from '../../services/filter/filter.service';
 })
 export class LeftSidebarComponent implements OnInit {
 
+    textFilter: any;
+    textFilterSubscription: Subscription;
+    assertions: any;
+    assertionsNotesSubscription: Subscription;
     releases: any;
     releasesNotesSubscription: Subscription;
     severity: any;
@@ -35,6 +39,8 @@ export class LeftSidebarComponent implements OnInit {
         this.releasesNotesSubscription = this.releaseService.getReleases().subscribe( data => this.releases = data);
         this.severityNotesSubscription = this.filterService.getSeverity().subscribe( data => this.severity = data);
         this.groupNotesSubscription = this.filterService.getGroup().subscribe( data => this.group = data);
+        this.textFilterSubscription = this.filterService.getTextFilter().subscribe(data => this.textFilter = data);
+        this.assertionsNotesSubscription = this.releaseService.getAssertions().subscribe( data => this.assertions = data);
     }
 
     ngOnInit() {
@@ -69,5 +75,44 @@ export class LeftSidebarComponent implements OnInit {
         if (this.group) {
             return !!this.group.includes(name);
         }
+    }
+
+    reset(): void {
+        this.filterService.setSeverity(undefined);
+        this.filterService.setType(undefined);
+        this.filterService.setGroup([]);
+        this.filterService.setTextFilter('');
+    }
+
+    containsDrools(name: string): boolean {
+        let drools = false;
+
+        if (this.assertions) {
+            let filteredAssertions = this.assertions?.filter(assertion => assertion.groups?.includes(name));
+
+            filteredAssertions.forEach(assertion => {
+                if (assertion?.type === 'DROOL_RULES') {
+                    drools = true;
+                }
+            });
+        }
+
+        return drools;
+    }
+
+    contains(name: string, type: string) {
+        let found = false;
+
+        if (this.assertions) {
+            let filteredAssertions = this.assertions?.filter(assertion => assertion.groups?.includes(name));
+
+            filteredAssertions.forEach(assertion => {
+                if (assertion?.type === type) {
+                    found = true;
+                }
+            });
+        }
+
+        return found;
     }
 }

@@ -6,11 +6,20 @@ import {Subject} from 'rxjs';
 })
 export class FilterService {
 
+    private textFilter = new Subject();
     private severity = new Subject();
     private group = new Subject();
     private type = new Subject();
 
     constructor() {
+    }
+
+    setTextFilter(textFilter) {
+        this.textFilter.next(textFilter);
+    }
+
+    getTextFilter() {
+        return this.textFilter.asObservable();
     }
 
     setSeverity(severity) {
