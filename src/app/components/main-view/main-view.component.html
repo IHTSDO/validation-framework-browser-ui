@@ -91,7 +91,7 @@
     <div body>
         <p><b class="pe-2">ID:</b>{{activeAssertion?.uuid}}</p>
         <p><b class="pe-2">TEXT:</b>{{activeAssertion?.assertionText}}</p>
-        <p *ngIf="activeAssertion?.url"><b class="pe-2">CODE:</b><a [href]="activeAssertion.url">{{activeAssertion.url}}</a></p>
+        <p *ngIf="activeAssertion?.url"><b class="pe-2">CODE:</b><a [href]="activeAssertion.url" target="_blank">{{activeAssertion.url}}</a></p>
     </div>
     <div footer>
         <button type="button" class="btn" (click)="closeModal('assertion-modal')">CLOSE</button>
