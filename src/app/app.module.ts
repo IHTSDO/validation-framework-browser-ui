@@ -32,6 +32,7 @@ import {TypeFilterPipe} from './pipes/type-filter/type-filter.pipe';
 import {AuthoringPipe} from './pipes/authoring-filter/authoring.pipe';
 import {EditionPipe} from './pipes/edition/edition.pipe';
 import { SortPipe } from './pipes/sort/sort.pipe';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
     declarations: [
@@ -61,6 +62,7 @@ import { SortPipe } from './pipes/sort/sort.pipe';
         AppRoutingModule,
         NgbPopoverModule,
         ToastrModule.forRoot(),
+        MatSlideToggleModule,
     ],
     providers: [
         AuthenticationService,

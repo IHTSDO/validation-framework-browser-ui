@@ -193,3 +193,12 @@ ngb-typeahead-window.dropdown-menu button {
 .w-20 {
     width: 20%;
 }
+
+mat-slide-toggle {
+    label {
+        span {
+            font-size: 1.4rem !important;
+            font-weight: 400;
+        }
+    }
+}

@@ -92,6 +92,14 @@
         <p><b class="pe-2">ID:</b>{{activeAssertion?.uuid}}</p>
         <p><b class="pe-2">TEXT:</b>{{activeAssertion?.assertionText}}</p>
         <p *ngIf="activeAssertion?.url"><b class="pe-2">CODE:</b><a [href]="activeAssertion.url" target="_blank">{{activeAssertion.url}}</a></p>
+        <div class="break m-5"></div>
+        <p>Rule active for following assertions:</p>
+        <div>
+            <mat-slide-toggle class="p-3">at-authoring</mat-slide-toggle>
+        </div>
+        <div>
+            <mat-slide-toggle class="p-3">be-authoring</mat-slide-toggle>
+        </div>
     </div>
     <div footer>
         <button type="button" class="btn" (click)="closeModal('assertion-modal')">CLOSE</button>

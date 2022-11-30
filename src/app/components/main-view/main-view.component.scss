@@ -109,6 +109,12 @@ div.main-view {
     }
 }
 
+app-modal#assertion-modal {
+    div.break {
+        border-bottom: 1px solid $ghost-grey;
+    }
+}
+
 $spring-rain: #95BB95;
 $london-hue: #B695BB;
 $vanilla: #BBAE95;
