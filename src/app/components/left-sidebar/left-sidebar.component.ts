@@ -71,7 +71,7 @@ export class LeftSidebarComponent implements OnInit {
         }
     }
 
-    groupIncludes(name): boolean {
+    groupIncludes(name): any {
         if (this.group) {
             return !!this.group.includes(name);
         }

@@ -18,6 +18,8 @@ export class AlphabeticalPipe implements PipeTransform {
             if (a[key].toLowerCase() < b[key].toLowerCase()) {
                 return -1;
             }
+
+            return null;
         });
 
         return items;
