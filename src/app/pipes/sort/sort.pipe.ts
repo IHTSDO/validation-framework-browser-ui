@@ -23,6 +23,8 @@ export class SortPipe implements PipeTransform {
                 if (a[sortKey].toLowerCase() < b[sortKey].toLowerCase()) {
                     return -1;
                 }
+
+                return null;
             });
         }
 
@@ -35,6 +37,8 @@ export class SortPipe implements PipeTransform {
                 if (a[sortKey].toLowerCase() > b[sortKey].toLowerCase()) {
                     return -1;
                 }
+
+                return null;
             });
         }
 

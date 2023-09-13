@@ -20,6 +20,8 @@ export class GroupFilterPipe implements PipeTransform {
                     return item.groups.includes(element);
                 });
             }
+
+            return [];
         });
 
         return items;
