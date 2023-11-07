@@ -32,6 +32,7 @@ import {TypeFilterPipe} from './pipes/type-filter/type-filter.pipe';
 import {AuthoringPipe} from './pipes/authoring-filter/authoring.pipe';
 import {EditionPipe} from './pipes/edition/edition.pipe';
 import { SortPipe } from './pipes/sort/sort.pipe';
+import {AuthenticationInterceptor} from "./interceptors/authentication.interceptor";
 
 @NgModule({
     declarations: [
@@ -74,6 +75,11 @@ import { SortPipe } from './pipes/sort/sort.pipe';
         {
             provide: HTTP_INTERCEPTORS,
             useClass: HeaderInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthenticationInterceptor,
             multi: true
         }
     ],
