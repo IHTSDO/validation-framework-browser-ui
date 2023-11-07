@@ -50,6 +50,11 @@ nav#sidebar {
 
                 input {
                     font-size: 2rem;
+
+                    &.form-check-input:checked {
+                        background-color: $cerulean;
+                        border-color: $cerulean;
+                    }
                 }
             }
         }
