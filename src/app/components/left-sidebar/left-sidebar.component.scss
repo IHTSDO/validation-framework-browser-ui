@@ -2,12 +2,14 @@
 
 nav#sidebar {
     position: fixed;
-    width: 32rem;
+    width: 40rem;
     height: calc(100vh - 90px);
     background: $alto-white;
     overflow: auto;
 
     div.header {
+        position: relative;
+
         h3, h4 {
             border-bottom: 1px $ghost-grey solid;
             height: 4rem;
@@ -33,6 +35,22 @@ nav#sidebar {
                 position: absolute;
                 right: 0.5rem;
                 top: 0.5rem;
+            }
+
+            div.form-switch {
+                position: absolute;
+                right: 3rem;
+                top: 0.5rem;
+
+                label {
+                    font-size: 1.4rem;
+                    color: $blumine;
+                    margin-top: 2px;
+                }
+
+                input {
+                    font-size: 2rem;
+                }
             }
         }
     }

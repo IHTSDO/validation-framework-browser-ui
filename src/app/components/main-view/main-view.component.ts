@@ -39,6 +39,8 @@ export class MainViewComponent implements OnInit {
     groupNotesSubscription: Subscription;
     type: any;
     typeSubscription: Subscription;
+    additive: any;
+    additiveSubscription: Subscription;
 
     activeAssertion: any;
 
@@ -65,6 +67,7 @@ export class MainViewComponent implements OnInit {
         this.groupNotesSubscription = this.filterService.getGroup().subscribe( data => this.group = data);
         this.typeSubscription = this.filterService.getType().subscribe( data => this.type = data);
         this.textFilterSubscription = this.filterService.getTextFilter().subscribe(data => this.textFilter = data);
+        this.additiveSubscription = this.filterService.getAdditive().subscribe(data => this.additive = data);
     }
 
     ngOnInit(): void {
@@ -125,7 +128,7 @@ export class MainViewComponent implements OnInit {
 
     createTSV(assertions): any {
         assertions = this.textPipe.transform(assertions, this.textFilter);
-        assertions = this.groupPipe.transform(assertions, this.group);
+        assertions = this.groupPipe.transform(assertions, this.group, this.additive);
         assertions = this.severityPipe.transform(assertions, this.severity);
         assertions = this.typePipe.transform(assertions, this.type);
 

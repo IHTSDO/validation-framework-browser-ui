@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -10,6 +10,7 @@ export class FilterService {
     private severity = new Subject();
     private group = new Subject();
     private type = new Subject();
+    private additive = new BehaviorSubject(true);
 
     constructor() {
     }
@@ -44,5 +45,13 @@ export class FilterService {
 
     getType() {
         return this.type.asObservable();
+    }
+
+    setAdditive(additive) {
+        this.additive.next(additive);
+    }
+
+    getAdditive() {
+        return this.additive.asObservable();
     }
 }

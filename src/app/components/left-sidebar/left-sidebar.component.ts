@@ -11,6 +11,8 @@ import {FilterService} from '../../services/filter/filter.service';
 })
 export class LeftSidebarComponent implements OnInit {
 
+    additive: any;
+    additiveSubscription: Subscription;
     textFilter: any;
     textFilterSubscription: Subscription;
     assertions: any;
@@ -22,17 +24,6 @@ export class LeftSidebarComponent implements OnInit {
     group: any = [];
     groupNotesSubscription: Subscription;
 
-    chapters = [
-        'Introduction',
-        'Colours',
-        'Typeface',
-        'Forms',
-        'Modals',
-        'Toastr',
-        'Libraries',
-        'Learning'
-    ];
-
     constructor(private conceptService: ConceptService,
                 private releaseService: ReleaseService,
                 private filterService: FilterService) {
@@ -40,6 +31,7 @@ export class LeftSidebarComponent implements OnInit {
         this.severityNotesSubscription = this.filterService.getSeverity().subscribe( data => this.severity = data);
         this.groupNotesSubscription = this.filterService.getGroup().subscribe( data => this.group = data);
         this.textFilterSubscription = this.filterService.getTextFilter().subscribe(data => this.textFilter = data);
+        this.additiveSubscription = this.filterService.getAdditive().subscribe(data => this.additive = data);
         this.assertionsNotesSubscription = this.releaseService.getAssertions().subscribe( data => this.assertions = data);
     }
 
@@ -51,6 +43,10 @@ export class LeftSidebarComponent implements OnInit {
 
     cloneObject(object): any {
         return JSON.parse(JSON.stringify(object));
+    }
+
+    toggleAdditive(): void {
+        this.filterService.setAdditive(!this.additive);
     }
 
     setSeverity(severity: string): void {

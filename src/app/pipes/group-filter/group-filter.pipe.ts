@@ -6,7 +6,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class GroupFilterPipe implements PipeTransform {
 
-    transform(items: any[], inputFilters: string[]): any[] {
+    transform(items: any[], inputFilters: string[], additive: boolean): any[] {
         if (!items) {
             return [];
         }
@@ -14,15 +14,28 @@ export class GroupFilterPipe implements PipeTransform {
             return items;
         }
 
-        items = items.filter(item => {
-            if (item.groups) {
-                return inputFilters.every(element => {
-                    return item.groups.includes(element);
-                });
-            }
+        if (additive) {
+            items = items.filter(item => {
+                if (item.groups) {
+                    return inputFilters.find(element => {
+                        return item.groups.includes(element);
+                    });
+                }
 
-            return [];
-        });
+                return [];
+            });
+        } else {
+            items = items.filter(item => {
+                if (item.groups) {
+                    return inputFilters.every(element => {
+                        return item.groups.includes(element);
+                    });
+                }
+
+                return [];
+            });
+        }
+
 
         return items;
     }
