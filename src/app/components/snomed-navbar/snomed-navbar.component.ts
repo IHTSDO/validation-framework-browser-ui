@@ -1,14 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { User } from '../../models/user';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import {PathingService} from '../../services/pathing/pathing.service';
 import {Location} from '@angular/common';
+import {Codesystem} from "../../models/codesystem";
+import {Version} from "../../models/version";
+import {Router} from "@angular/router";
+import {ReverseAlphabeticalPipe} from "../../pipes/reverse-alphabetical/reverse-alphabetical.pipe";
 
 @Component({
     selector: 'app-snomed-navbar',
     templateUrl: './snomed-navbar.component.html',
-    styleUrls: ['./snomed-navbar.component.scss']
+    styleUrls: ['./snomed-navbar.component.scss'],
+    providers: [ReverseAlphabeticalPipe]
 })
 export class SnomedNavbarComponent implements OnInit {
 
@@ -18,113 +23,97 @@ export class SnomedNavbarComponent implements OnInit {
     user: User;
     userSubscription: Subscription;
 
-    branches: any;
-    branchesSubscription: Subscription;
-    activeBranch: any;
-    activeBranchSubscription: Subscription;
+    codesystems: Codesystem[];
+    codesystemsSubscription: Subscription;
+    activeCodesystem: Codesystem;
+    activeCodesystemSubscription: Subscription;
 
-    projects: any;
-    projectsSubscription: Subscription;
-    activeProject: any;
-    activeProjectSubscription: Subscription;
+    versions: Version[];
+    versionsSubscription: Subscription;
+    activeVersion: Version;
+    activeVersionSubscription: Subscription;
 
-    tasks: any;
-    tasksSubscription: Subscription;
-    activeTask: any;
-    activeTaskSubscription: Subscription;
-
-    constructor(private authenticationService: AuthenticationService, private pathingService: PathingService, private location: Location) {
+    constructor(private authenticationService: AuthenticationService,
+                private pathingService: PathingService,
+                private reverseAlphabeticalPipe: ReverseAlphabeticalPipe,
+                private location: Location,
+                private router: Router) {
         this.environment = window.location.host.split(/[.]/)[0].split(/[-]/)[0];
         this.userSubscription = this.authenticationService.getUser().subscribe(data => this.user = data);
-        this.branchesSubscription = this.pathingService.getBranches().subscribe(data => this.branches = data);
-        this.activeBranchSubscription = this.pathingService.getActiveBranch().subscribe(data => this.activeBranch = data);
-        this.projectsSubscription = this.pathingService.getProjects().subscribe(data => this.projects = data);
-        this.activeProjectSubscription = this.pathingService.getActiveProject().subscribe(data => this.activeProject = data);
-        this.tasksSubscription = this.pathingService.getTasks().subscribe(data => this.tasks = data);
-        this.activeTaskSubscription = this.pathingService.getActiveTask().subscribe(data => this.activeTask = data);
+        this.codesystemsSubscription = this.pathingService.getCodesystems().subscribe(data => this.codesystems = data);
+        this.activeCodesystemSubscription = this.pathingService.getActiveCodesystem().subscribe(data => this.activeCodesystem = data);
+        this.versionsSubscription = this.pathingService.getVersions().subscribe(data => this.versions = data);
+        this.activeVersionSubscription = this.pathingService.getActiveVersion().subscribe(data => this.activeVersion = data);
     }
 
     ngOnInit() {
-        // this.authenticationService.setUser();
         this.path = this.location.path();
 
-        // this.pathingService.httpGetBranches().subscribe(branches => {
-        //     this.pathingService.setBranches(branches);
-        //     if (!this.path) {
-        //         this.pathingService.setActiveBranch(branches[0]);
-        //     }
-        // });
-        //
-        // this.pathingService.httpGetProjects().subscribe(projects => {
-        //     this.pathingService.setProjects(projects);
-        //     this.setPath(this.path);
-        // });
+        this.pathingService.httpGetCodesystems().subscribe(codesystems => {
+            this.pathingService.setCodesystems(codesystems);
+
+            if (this.findCodesystemFromPath(codesystems)) {
+                this.pathingService.setActiveCodesystem(this.findCodesystemFromPath(codesystems));
+
+                if (this.findCodesystemFromPath(codesystems).branchPath !== 'MAIN') {
+                    this.pathingService.httpGetVersions(this.findCodesystemFromPath(codesystems)).subscribe(versions => {
+                        this.pathingService.setVersions(versions);
+
+                        if (this.findVersionFromPath(versions)) {
+                            this.pathingService.setActiveVersion(this.findVersionFromPath(versions));
+                        }
+                    });
+                }
+            }
+        });
     }
 
+    findCodesystemFromPath(codesystems: Codesystem[]): Codesystem {
+        let codesystemPath = this.path;
+        codesystemPath = codesystemPath.replace(/\d{6,18}/g, '');
+        codesystemPath = codesystemPath.replace(/\/[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]/g, '');
 
-    setPath(path) {
-        const splitPath = path.split('?')[0].split('/');
-        this.setBranch({ branchPath: 'MAIN'});
-        if (path.includes('SNOMEDCT')) {
-            if (splitPath.length > 2) {
-                this.setBranch({ branchPath: splitPath[1] + '/' + splitPath[2]});
-            }
-
-            if (splitPath.length > 3) {
-                this.setProject({ key: splitPath[3]});
-            }
-
-            if (splitPath.length > 4) {
-                this.setTask({ key: splitPath[4]});
-            }
-        } else {
-            if (splitPath.length > 1) {
-                this.setBranch({ branchPath: splitPath[1]});
-            }
-
-            if (splitPath.length > 2) {
-                this.setProject({ key: splitPath[2]});
-            }
-
-            if (splitPath.length > 3) {
-                this.setTask({ key: splitPath[3]});
-            }
+        if (codesystemPath.startsWith('/')) {
+            codesystemPath = codesystemPath.substring(1);
         }
+
+        if (codesystemPath.endsWith('/')) {
+            codesystemPath = codesystemPath.substring(0, codesystemPath.length - 1);
+        }
+
+        return codesystems.find(codesystem => codesystem.branchPath === codesystemPath)!;
     }
 
-    setBranch(branch) {
-        this.pathingService.setActiveBranch(branch);
-
-        this.pathingService.setActiveProject(null);
-
-        this.pathingService.setTasks([]);
-        this.pathingService.setActiveTask(null);
+    findVersionFromPath(versions: Version[]): Version {
+        return versions.find(version => this.path.includes(version.version));
     }
 
-    setProject(project) {
-        const proj = this.projects.find(item => item.key === project.key);
-        this.pathingService.setActiveProject(proj);
+    setCodesystem(codesystem: Codesystem): void {
+        this.pathingService.setActiveCodesystem(codesystem);
+        this.pathingService.setActiveVersion(undefined);
+        this.router.navigate([codesystem.branchPath]);
 
-        this.pathingService.setTasks([]);
-        this.pathingService.setActiveTask(null);
-
-        if (proj.key) {
-            this.pathingService.httpGetTasks(proj).subscribe(tasks => {
-                this.pathingService.setTasks(tasks);
+        if (codesystem.branchPath !== 'MAIN') {
+            this.pathingService.httpGetVersions(codesystem).subscribe(versions => {
+                this.pathingService.setVersions(versions);
             });
         }
     }
 
-    noProject() {
-        this.pathingService.setActiveProject(null);
+    setVersion(version: Version): void {
+        this.pathingService.setActiveVersion(version);
+        this.router.navigate([this.activeCodesystem.branchPath, version.version]);
     }
 
-    setTask(task) {
-        this.pathingService.setActiveTask(task);
+    findLatestVersion(versions: Version[]): Version {
+        return this.reverseAlphabeticalPipe.transform(versions, 'effectiveDate')[0];
     }
 
-    noTask() {
-        this.pathingService.setActiveTask(null);
+    clearExclusions() {
+        this.pathingService.setActiveCodesystem(undefined);
+        this.pathingService.setActiveVersion(undefined);
+        this.pathingService.setVersions(undefined);
+        this.router.navigate(['']);
     }
 
     logout() {

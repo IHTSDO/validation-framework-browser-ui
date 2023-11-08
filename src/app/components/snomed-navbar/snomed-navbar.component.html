@@ -3,13 +3,54 @@
         <img class="logo me-2 p-0" src="/validation-browser/assets/small_logo.png">
         <span class="title text-ghost-grey">SNOMED CT Validation Framework Browser</span>
     </a>
-<!--    <ng-container [ngSwitch]="environment">-->
-<!--        <div *ngSwitchCase="'local'" class="banner text-white local"></div>-->
-<!--        <div *ngSwitchCase="'dev'" class="banner text-white dev"></div>-->
-<!--        <div *ngSwitchCase="'uat'" class="banner text-white uat"></div>-->
-<!--        <div *ngSwitchCase="'training'" class="banner text-white training"></div>-->
-<!--        <div *ngSwitchDefault class="banner text-white d-none"></div>-->
-<!--    </ng-container>-->
+    <ng-container [ngSwitch]="environment">
+        <div *ngSwitchCase="'local'" class="banner text-white local"></div>
+        <div *ngSwitchCase="'dev'" class="banner text-white dev"></div>
+        <div *ngSwitchCase="'uat'" class="banner text-white uat"></div>
+        <div *ngSwitchCase="'training'" class="banner text-white training"></div>
+        <div *ngSwitchDefault class="banner text-white d-none"></div>
+    </ng-container>
+
+    <ul *ngIf="codesystems; else loading" class="dropdown-nav me-auto my-2">
+        <li class="nav-item dropdown">
+            <a class="nav-link px-3 py-2 rounded dropdown-toggle text-end" [class.add]="!activeCodesystem" id="codesystemDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{activeCodesystem ? activeCodesystem.branchPath : 'BRANCH'}}
+            </a>
+            <div class="dropdown-menu py-0" aria-labelledby="branchDropdown">
+                <ng-container *ngFor="let codesystem of codesystems">
+                    <a class="dropdown-item ps-3" (click)="setCodesystem(codesystem)">{{codesystem?.branchPath}}</a>
+                </ng-container>
+            </div>
+        </li>
+        <ng-container *ngIf="activeCodesystem?.branchPath !== 'MAIN' && versions">
+            <li class="px-3 py-2 slash">/</li>
+            <li class="nav-item dropdown">
+                <a class="nav-link px-3 py-2 rounded dropdown-toggle text-end" [class.add]="!activeVersion" id="versionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{activeVersion && versions.length ? activeVersion?.version : 'VERSION'}}
+                </a>
+                <div class="dropdown-menu py-0" aria-labelledby="branchDropdown">
+                    <ng-container *ngFor="let version of versions">
+                        <a class="dropdown-item ps-3" (click)="setVersion(version)">{{version?.version}}</a>
+                    </ng-container>
+                </div>
+            </li>
+        </ng-container>
+        <ng-container *ngIf="activeCodesystem">
+            <li class="px-3 py-2 clear" (click)="clearExclusions()"><i class="fa-solid fa-xmark"></i></li>
+        </ng-container>
+    </ul>
+
+    <ng-template #loading>
+        <ul class="dropdown-nav me-auto my-2">
+            <li class="nav-item">
+                <a class="nav-link px-3 py-2 rounded loading">
+                    <div class="spinner-border" style="font-size: 1rem" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </ng-template>
 
 <!--    <div *ngIf="user" class="float-right mx-3">-->
 <!--        <div class="logout d-inline-block m-2" (click)="logout()">-->

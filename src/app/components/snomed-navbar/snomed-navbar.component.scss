@@ -69,8 +69,12 @@ nav {
         li {
             display: inline-block;
 
+            &.slash {
+                color: $white;
+            }
+
             a {
-                min-width: 8rem;
+                //min-width: 8rem;
                 font-size: 1.4rem;
                 height: 3rem;
                 color: $white;
@@ -82,6 +86,10 @@ nav {
 
                 &.add {
                     background-color: $fruit-salad;
+
+                    &:hover {
+                        background-color: darken($fruit-salad, 10%);
+                    }
                 }
 
                 &.loading {
@@ -112,6 +120,17 @@ nav {
                         background-color: darken($bootstrap-dark, 10%);
                         cursor: pointer;
                     }
+                }
+            }
+
+            &.clear {
+                font-size: 1.6rem;
+                vertical-align: top;
+                color: $white;
+
+                &:hover {
+                    cursor: pointer;
+                    color: $ghost-grey;
                 }
             }
         }
