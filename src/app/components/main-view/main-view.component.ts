@@ -9,6 +9,13 @@ import {TextFilterPipe} from "../../pipes/text-filter/text-filter.pipe";
 import {GroupFilterPipe} from "../../pipes/group-filter/group-filter.pipe";
 import {SeverityFilterPipe} from "../../pipes/severity-filter/severity-filter.pipe";
 import {TypeFilterPipe} from "../../pipes/type-filter/type-filter.pipe";
+import {ExceptionsService} from "../../services/exceptions/exceptions.service";
+import {ExceptionsPipe} from "../../pipes/exceptions/exceptions.pipe";
+import {Codesystem} from "../../models/codesystem";
+import {Version} from "../../models/version";
+import {PathingService} from "../../services/pathing/pathing.service";
+import {ConceptService} from "../../services/concept/concept.service";
+import {ExceptionsTablePipe} from "../../pipes/exceptions-table/exceptions-table.pipe";
 
 @Component({
     selector: 'app-main-view',
@@ -18,7 +25,9 @@ import {TypeFilterPipe} from "../../pipes/type-filter/type-filter.pipe";
         TextFilterPipe,
         GroupFilterPipe,
         SeverityFilterPipe,
-        TypeFilterPipe
+        TypeFilterPipe,
+        ExceptionsPipe,
+        ExceptionsTablePipe
     ]
 })
 export class MainViewComponent implements OnInit {
@@ -41,6 +50,16 @@ export class MainViewComponent implements OnInit {
     typeSubscription: Subscription;
     additive: any;
     additiveSubscription: Subscription;
+    exceptions: any;
+    exceptionsSubscription: Subscription;
+    activeCodesystem: Codesystem;
+    activeCodesystemSubscription: Subscription;
+    activeVersion: Version;
+    activeVersionSubscription: Subscription;
+    codesystems: Codesystem[];
+    codesystemsSubscription: Subscription;
+
+    assertionsExceptionsList: any = [];
 
     activeAssertion: any;
 
@@ -52,10 +71,15 @@ export class MainViewComponent implements OnInit {
                 private modalService: ModalService,
                 private releaseService: ReleaseService,
                 private filterService: FilterService,
+                private exceptionsService: ExceptionsService,
+                private conceptService: ConceptService,
+                private pathingService: PathingService,
                 private textPipe: TextFilterPipe,
                 private groupPipe: GroupFilterPipe,
                 private severityPipe: SeverityFilterPipe,
-                private typePipe: TypeFilterPipe) {
+                private typePipe: TypeFilterPipe,
+                private exceptionsPipe: ExceptionsPipe,
+                private exceptionsTablePipe: ExceptionsTablePipe) {
         this.releasesNotesSubscription = this.releaseService.getReleases().subscribe( data => this.releases = data);
         this.assertionsNotesSubscription = this.releaseService.getAssertions().subscribe( data => {
             this.assertions = data;
@@ -68,6 +92,10 @@ export class MainViewComponent implements OnInit {
         this.typeSubscription = this.filterService.getType().subscribe( data => this.type = data);
         this.textFilterSubscription = this.filterService.getTextFilter().subscribe(data => this.textFilter = data);
         this.additiveSubscription = this.filterService.getAdditive().subscribe(data => this.additive = data);
+        this.exceptionsSubscription = this.exceptionsService.getExceptions().subscribe(data => this.exceptions = data);
+        this.activeCodesystemSubscription = this.pathingService.getActiveCodesystem().subscribe(data => this.activeCodesystem = data);
+        this.activeVersionSubscription = this.pathingService.getActiveVersion().subscribe(data => this.activeVersion = data);
+        this.codesystemsSubscription = this.pathingService.getCodesystems().subscribe(data => this.codesystems = data);
     }
 
     ngOnInit(): void {
@@ -112,6 +140,23 @@ export class MainViewComponent implements OnInit {
         this.modalService.close(id);
     }
 
+    findAssertionExceptions(assertionUuid): void {
+        if(this.activeCodesystem) {
+            this.assertionsExceptionsList = [];
+            let exceptions = this.exceptionsTablePipe.transform(this.exceptions, assertionUuid);
+            let ids = [];
+            ids.push(exceptions.map(e => e.conceptId));
+
+            this.conceptService.httpBulkGetConcepts(ids).subscribe(data => {
+                this.assertionsExceptionsList = data;
+            });
+        }
+    }
+
+    findExceptionConceptFSN(id): any {
+        return this.assertionsExceptionsList.find(e => e.conceptId === id)?.fsn?.term;
+    }
+
     downloadTSV(): void {
         const tsvContent = this.createTSV(this.assertions).map(e => e.join("\t")).join("\n")
 
@@ -131,6 +176,7 @@ export class MainViewComponent implements OnInit {
         assertions = this.groupPipe.transform(assertions, this.group, this.additive);
         assertions = this.severityPipe.transform(assertions, this.severity);
         assertions = this.typePipe.transform(assertions, this.type);
+        assertions = this.exceptionsPipe.transform(assertions, this.exceptions, !!this.activeCodesystem);
 
         const tsvArray = [];
 

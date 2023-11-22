@@ -1,7 +1,7 @@
 <div class="main-view">
     <div class="top-area">
         <div class="row g-0">
-            <h2 class="col p-3 m-0">Rules<span *ngIf="assertions" class="px-3 count">{{(assertions | textFilter:textFilter | groupFilter:group:additive | severityFilter:severity | typeFilter:type).length}} assertions</span></h2>
+            <h2 class="col p-3 m-0">Rules<span *ngIf="assertions" class="px-3 count">{{(assertions | textFilter:textFilter | groupFilter:group:additive | severityFilter:severity | typeFilter:type | exceptions:exceptions:!!activeCodesystem).length}} assertions</span></h2>
             <div class="col-1 p-3">
                 <button class="btn bg-wisteria bg-wisteria-hover float-end" (click)="downloadTSV()">DOWNLOAD</button>
             </div>
@@ -32,66 +32,102 @@
             </div>
         </div>
     </div>
-    <div class="p-3">
-        <table class="table table-striped table-hover">
-            <thead>
-            <tr>
-                <th (click)="sortOn('uuid')">ID
-<!--                    <span *ngIf="sortKey === 'uuid' && sortType === 'default'"><i class="fas fa-arrow-down"></i></span>-->
-                    <span *ngIf="sortKey === 'uuid' && sortType === 'desc'" class="ps-2"><i class="fas fa-arrow-down"></i></span>
-                    <span *ngIf="sortKey === 'uuid' && sortType === 'asc'" class="ps-2"><i class="fas fa-arrow-up"></i></span>
-                </th>
-                <th (click)="sortOn('assertionText')">Description
-<!--                    <span *ngIf="sortKey === 'assertionText' && sortType === 'default'">A</span>-->
-                    <span *ngIf="sortKey === 'assertionText' && sortType === 'desc'" class="ps-2"><i class="fas fa-arrow-down"></i></span>
-                    <span *ngIf="sortKey === 'assertionText' && sortType === 'asc'" class="ps-2"><i class="fas fa-arrow-up"></i></span>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let assertion of localAssertions | sort:sortKey:sortType | textFilter:textFilter | groupFilter:group:additive | severityFilter:severity | typeFilter:type">
-                <td [class.spring-rain-border]="assertion.type === 'DROOL_RULES'"
-                    [class.london-hue-border]="assertion.type === 'SQL'"
-                    [class.vanilla-border]="assertion.type === 'MRCM'"
-                    [class.dull-lavender-border]="assertion.type === 'TRACEABILITY'">
-                    {{assertion.uuid}}
-                </td>
-                <td [class.spring-rain-border]="assertion.type === 'DROOL_RULES'"
-                    [class.london-hue-border]="assertion.type === 'SQL'"
-                    [class.vanilla-border]="assertion.type === 'MRCM'"
-                    [class.dull-lavender-border]="assertion.type === 'TRACEABILITY'">
-                    <span class="assertion-text" (click)="openModal('assertion-modal'); activeAssertion = assertion">{{assertion.assertionText}}</span>
-                    <span *ngIf="assertion.severity && assertion.severity.includes('WARNING')" class="marker orange d-inline-block px-2 m-1">WARNING</span>
-                    <span *ngIf="assertion.severity && assertion.severity.includes('ERROR')" class="marker red d-inline-block px-2 m-1">ERROR</span>
+<!--    <ng-container *ngIf="activeCodesystem">-->
+<!--        <div class="loading p-3 text-center">-->
+<!--            <i class="fa-solid fa-spin fa-circle-notch"></i>-->
+<!--        </div>-->
+<!--    </ng-container>-->
+    <ng-container *ngIf="codesystems">
+        <div class="p-3">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th (click)="sortOn('uuid')">ID
+                        <!--                    <span *ngIf="sortKey === 'uuid' && sortType === 'default'"><i class="fas fa-arrow-down"></i></span>-->
+                        <span *ngIf="sortKey === 'uuid' && sortType === 'desc'" class="ps-2"><i class="fas fa-arrow-down"></i></span>
+                        <span *ngIf="sortKey === 'uuid' && sortType === 'asc'" class="ps-2"><i class="fas fa-arrow-up"></i></span>
+                    </th>
+                    <th (click)="sortOn('assertionText')">Description
+                        <!--                    <span *ngIf="sortKey === 'assertionText' && sortType === 'default'">A</span>-->
+                        <span *ngIf="sortKey === 'assertionText' && sortType === 'desc'" class="ps-2"><i class="fas fa-arrow-down"></i></span>
+                        <span *ngIf="sortKey === 'assertionText' && sortType === 'asc'" class="ps-2"><i class="fas fa-arrow-up"></i></span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let assertion of localAssertions | sort:sortKey:sortType | textFilter:textFilter | groupFilter:group:additive | severityFilter:severity | typeFilter:type | exceptions:exceptions:!!activeCodesystem">
+                    <td [class.spring-rain-border]="assertion.type === 'DROOL_RULES'"
+                        [class.london-hue-border]="assertion.type === 'SQL'"
+                        [class.vanilla-border]="assertion.type === 'MRCM'"
+                        [class.dull-lavender-border]="assertion.type === 'TRACEABILITY'">
+                        {{assertion.uuid}}
+                    </td>
+                    <td [class.spring-rain-border]="assertion.type === 'DROOL_RULES'"
+                        [class.london-hue-border]="assertion.type === 'SQL'"
+                        [class.vanilla-border]="assertion.type === 'MRCM'"
+                        [class.dull-lavender-border]="assertion.type === 'TRACEABILITY'">
+                        <span class="assertion-text" (click)="openModal('assertion-modal'); activeAssertion = assertion; findAssertionExceptions(assertion.uuid)">{{assertion.assertionText}}</span>
+                        <span *ngIf="assertion.severity && assertion.severity.includes('WARNING')" class="marker orange d-inline-block px-2 m-1">WARNING</span>
+                        <span *ngIf="assertion.severity && assertion.severity.includes('ERROR')" class="marker red d-inline-block px-2 m-1">ERROR</span>
 
-                    <ng-container *ngFor="let authoring of releases | authoring">
-                        <span *ngIf="assertion.groups && assertion.groups.includes(authoring.name)" class="marker blue d-inline-block px-2 m-1">{{authoring.name.substr(0, authoring.name.indexOf('-')) | uppercase}}</span>
-                    </ng-container>
-
-                    <span *ngIf="assertion.groups && (assertion.groups | edition).length > 2" class="marker green d-inline-block pe-2 m-1" [ngbPopover]="editionPop" triggers="mouseenter:mouseleave"><span class="prefix green px-2">{{(assertion.groups | edition).length}}</span> EDITIONS...</span>
-                    <ng-template #editionPop>
-                        <ng-container *ngFor="let edition of releases | edition">
-                            <span *ngIf="assertion.groups && assertion.groups.includes(edition.name)" class="marker green d-inline-block px-2 m-1">{{edition.name.substr(0, edition.name.indexOf('Edition')) | uppercase}}</span>
+                        <ng-container *ngFor="let authoring of releases | authoring">
+                            <span *ngIf="assertion.groups && assertion.groups.includes(authoring.name)" class="marker blue d-inline-block px-2 m-1">{{authoring.name.substr(0, authoring.name.indexOf('-')) | uppercase}}</span>
                         </ng-container>
-                    </ng-template>
 
-                    <ng-container *ngFor="let edition of releases | edition">
-                        <span *ngIf="assertion.groups && assertion.groups.length <= 2 && assertion.groups.includes(edition.name)" class="marker green d-inline-block px-2 m-1">{{edition.name.substr(0, edition.name.indexOf('Edition')) | uppercase}}</span>
-                    </ng-container>
-                </td>
-                <td><i *ngIf="assertion.url" class="fas fa-external-link-alt" (click)="goToUrl(assertion)"></i></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+                        <span *ngIf="assertion.groups && (assertion.groups | edition).length > 2" class="marker green d-inline-block pe-2 m-1" [ngbPopover]="editionPop" triggers="mouseenter:mouseleave"><span class="prefix green px-2">{{(assertion.groups | edition).length}}</span> EDITIONS...</span>
+                        <ng-template #editionPop>
+                            <ng-container *ngFor="let edition of releases | edition">
+                                <span *ngIf="assertion.groups && assertion.groups.includes(edition.name)" class="marker green d-inline-block px-2 m-1">{{edition.name.substr(0, edition.name.indexOf('Edition')) | uppercase}}</span>
+                            </ng-container>
+                        </ng-template>
+
+                        <ng-container *ngFor="let edition of releases | edition">
+                            <span *ngIf="assertion.groups && assertion.groups.length <= 2 && assertion.groups.includes(edition.name)" class="marker green d-inline-block px-2 m-1">{{edition.name.substr(0, edition.name.indexOf('Edition')) | uppercase}}</span>
+                        </ng-container>
+                    </td>
+                    <td><i *ngIf="assertion.url" class="fas fa-external-link-alt" (click)="goToUrl(assertion)"></i></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
 </div>
 
-<app-modal id="assertion-modal" class="modal">
+<app-modal id="assertion-modal" class="modal" [size]="'xl'">
     <div header><h3 class="mb-0">Assertion<span class="px-2"></span></h3></div>
     <div body>
         <p><b class="pe-2">ID:</b>{{activeAssertion?.uuid}}</p>
         <p><b class="pe-2">TEXT:</b>{{activeAssertion?.assertionText}}</p>
         <p *ngIf="activeAssertion?.url"><b class="pe-2">CODE:</b><a [href]="activeAssertion.url" target="_blank">{{activeAssertion.url}}</a></p>
+        <ng-container *ngIf="!assertionsExceptionsList.length">
+            <div class="loading p-3 text-center">
+                <i class="fa-solid fa-spin fa-circle-notch"></i>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="assertionsExceptionsList.length">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>FSN</th>
+                    <th>Component ID</th>
+                    <th>Error</th>
+                    <th>Reason</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ng-container *ngFor="let exception of exceptions | exceptionsTable:activeAssertion?.uuid">
+                    <tr>
+                        <td>{{exception?.conceptId ? exception.conceptId : '-'}}</td>
+                        <td>{{findExceptionConceptFSN(exception.conceptId)}}</td>
+                        <td>{{exception?.componentId ? exception.componentId : '-'}}</td>
+                        <td>{{exception?.assertionFailureText ? exception.assertionFailureText : '-'}}</td>
+                        <td>{{exception?.reason ? exception.reason : '-'}}</td>
+                    </tr>
+                </ng-container>
+                </tbody>
+            </table>
+        </ng-container>
     </div>
     <div footer>
         <button type="button" class="btn" (click)="closeModal('assertion-modal')">CLOSE</button>

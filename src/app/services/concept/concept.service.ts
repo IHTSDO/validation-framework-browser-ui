@@ -1,8 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject, Subscription} from 'rxjs';
+import {map, Observable, Subject, Subscription} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {BranchingService} from '../branching/branching.service';
 import {AuthoringService} from '../authoring/authoring.service';
+import {Codesystem} from "../../models/codesystem";
+import {Version} from "../../models/version";
+import {PathingService} from "../pathing/pathing.service";
 
 @Injectable({
     providedIn: 'root'
@@ -12,12 +15,20 @@ export class ConceptService {
     private branchPath: string;
     private branchPathSubscription: Subscription;
 
+    activeCodesystem: Codesystem;
+    activeCodesystemSubscription: Subscription;
+    activeVersion: Version;
+    activeVersionSubscription: Subscription;
+
     private concepts = new Subject();
 
     constructor(private http: HttpClient,
                 private authoringService: AuthoringService,
-                private branchingService: BranchingService) {
+                private branchingService: BranchingService,
+                private pathingService: PathingService) {
         this.branchPathSubscription = this.branchingService.getBranchPath().subscribe(data => this.branchPath = data);
+        this.activeCodesystemSubscription = this.pathingService.getActiveCodesystem().subscribe(data => this.activeCodesystem = data);
+        this.activeVersionSubscription = this.pathingService.getActiveVersion().subscribe(data => this.activeVersion = data);
     }
 
     setConcepts(concepts) {
@@ -28,8 +39,9 @@ export class ConceptService {
         return this.concepts.asObservable();
     }
 
-    httpGetExampleConcepts(id): Observable<any> {
-        return this.http.get<object>(this.authoringService.uiConfiguration.endpoints.terminologyServerEndpoint + 'browser/' +  this.branchPath
-            + '/concepts/' + id + '/children');
+    httpBulkGetConcepts(ids: string[]): Observable<any> {
+        return this.http.get<any>('/snowstorm/snomed-ct/' + this.activeCodesystem.branchPath + '/' + (this.activeVersion ? '/' + this.activeVersion.version : '') + '/concepts?conceptIds=' + ids.join('&conceptIds=')).pipe(map((data: any) => {
+            return data.items;
+        }));
     }
 }

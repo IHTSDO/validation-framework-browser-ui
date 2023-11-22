@@ -8,6 +8,7 @@ import {Codesystem} from "../../models/codesystem";
 import {Version} from "../../models/version";
 import {Router} from "@angular/router";
 import {ReverseAlphabeticalPipe} from "../../pipes/reverse-alphabetical/reverse-alphabetical.pipe";
+import {ExceptionsService} from "../../services/exceptions/exceptions.service";
 
 @Component({
     selector: 'app-snomed-navbar',
@@ -36,6 +37,7 @@ export class SnomedNavbarComponent implements OnInit {
     constructor(private authenticationService: AuthenticationService,
                 private pathingService: PathingService,
                 private reverseAlphabeticalPipe: ReverseAlphabeticalPipe,
+                private exceptionsService: ExceptionsService,
                 private location: Location,
                 private router: Router) {
         this.environment = window.location.host.split(/[.]/)[0].split(/[-]/)[0];
@@ -62,6 +64,10 @@ export class SnomedNavbarComponent implements OnInit {
                         if (this.findVersionFromPath(versions)) {
                             this.pathingService.setActiveVersion(this.findVersionFromPath(versions));
                         }
+
+                        this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
+                            this.exceptionsService.setExceptions(exceptions);
+                        });
                     });
                 }
             }
@@ -97,22 +103,31 @@ export class SnomedNavbarComponent implements OnInit {
             this.pathingService.httpGetVersions(codesystem).subscribe(versions => {
                 this.pathingService.setVersions(versions);
             });
+
+            this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
+                this.exceptionsService.setExceptions(exceptions);
+            });
         }
     }
 
     setVersion(version: Version): void {
         this.pathingService.setActiveVersion(version);
         this.router.navigate([this.activeCodesystem.branchPath, version.version]);
+
+        this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
+            this.exceptionsService.setExceptions(exceptions);
+        });
     }
 
     findLatestVersion(versions: Version[]): Version {
         return this.reverseAlphabeticalPipe.transform(versions, 'effectiveDate')[0];
     }
 
-    clearExclusions() {
+    clearExceptions() {
         this.pathingService.setActiveCodesystem(undefined);
         this.pathingService.setActiveVersion(undefined);
         this.pathingService.setVersions(undefined);
+        this.exceptionsService.setExceptions(undefined);
         this.router.navigate(['']);
     }
 

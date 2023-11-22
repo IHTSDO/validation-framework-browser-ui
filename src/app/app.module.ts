@@ -33,6 +33,9 @@ import {AuthoringPipe} from './pipes/authoring-filter/authoring.pipe';
 import {EditionPipe} from './pipes/edition/edition.pipe';
 import { SortPipe } from './pipes/sort/sort.pipe';
 import {AuthenticationInterceptor} from "./interceptors/authentication.interceptor";
+import {ExceptionsService} from "./services/exceptions/exceptions.service";
+import { ExceptionsPipe } from './pipes/exceptions/exceptions.pipe';
+import { ExceptionsTablePipe } from './pipes/exceptions-table/exceptions-table.pipe';
 
 @NgModule({
     declarations: [
@@ -51,7 +54,9 @@ import {AuthenticationInterceptor} from "./interceptors/authentication.intercept
         TypeFilterPipe,
         AuthoringPipe,
         EditionPipe,
-        SortPipe
+        SortPipe,
+        ExceptionsPipe,
+        ExceptionsTablePipe
     ],
     imports: [
         BrowserModule,
@@ -71,6 +76,7 @@ import {AuthenticationInterceptor} from "./interceptors/authentication.intercept
         PathingService,
         ConceptService,
         ReleaseService,
+        ExceptionsService,
         EnvServiceProvider,
         {
             provide: HTTP_INTERCEPTORS,

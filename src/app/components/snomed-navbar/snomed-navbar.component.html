@@ -14,7 +14,7 @@
     <ul *ngIf="codesystems; else loading" class="dropdown-nav me-auto my-2">
         <li class="nav-item dropdown">
             <a class="nav-link px-3 py-2 rounded dropdown-toggle text-end" [class.add]="!activeCodesystem" id="codesystemDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{activeCodesystem ? activeCodesystem.branchPath : 'BRANCH'}}
+                {{activeCodesystem ? activeCodesystem.branchPath : 'VIEW EXCEPTIONS'}}
             </a>
             <div class="dropdown-menu py-0" aria-labelledby="branchDropdown">
                 <ng-container *ngFor="let codesystem of codesystems">
@@ -36,7 +36,7 @@
             </li>
         </ng-container>
         <ng-container *ngIf="activeCodesystem">
-            <li class="px-3 py-2 clear" (click)="clearExclusions()"><i class="fa-solid fa-xmark"></i></li>
+            <li class="px-3 py-2 clear" (click)="clearExceptions()"><i class="fa-solid fa-xmark"></i></li>
         </ng-container>
     </ul>
 

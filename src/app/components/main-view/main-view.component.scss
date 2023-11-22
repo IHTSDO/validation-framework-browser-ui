@@ -22,6 +22,12 @@ div.main-view {
         }
     }
 
+    div.loading {
+        font-weight: 300;
+        font-size: 2rem;
+        color: $river-bed;
+    }
+
     table {
         thead {
             tr {
@@ -103,6 +109,33 @@ div.main-view {
                             color: $cerulean;
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+app-modal#assertion-modal {
+    div.loading {
+        font-weight: 300;
+        font-size: 2rem;
+        color: $river-bed;
+    }
+
+    table {
+        thead {
+            tr {
+                th {
+                    font-weight: 500;
+                    font-size: 1.4rem;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    font-size: 1.4rem;
                 }
             }
         }
