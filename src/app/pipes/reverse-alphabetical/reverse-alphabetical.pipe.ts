@@ -10,6 +10,18 @@ export class ReverseAlphabeticalPipe implements PipeTransform {
             return [];
         }
 
-        return items.sort((a,b) => b[key] - a[key]);
+        items = items.sort(function (a, b) {
+            if (a[key].toLowerCase() > b[key].toLowerCase()) {
+                return -1;
+            }
+
+            if (a[key].toLowerCase() < b[key].toLowerCase()) {
+                return 1;
+            }
+
+            return null;
+        });
+
+        return items;
     }
 }

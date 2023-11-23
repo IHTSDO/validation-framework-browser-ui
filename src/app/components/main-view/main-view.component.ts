@@ -141,8 +141,9 @@ export class MainViewComponent implements OnInit {
     }
 
     findAssertionExceptions(assertionUuid): void {
+        this.assertionsExceptionsList = [];
+
         if(this.activeCodesystem) {
-            this.assertionsExceptionsList = [];
             let exceptions = this.exceptionsTablePipe.transform(this.exceptions, assertionUuid);
             let ids = [];
             ids.push(exceptions.map(e => e.conceptId));

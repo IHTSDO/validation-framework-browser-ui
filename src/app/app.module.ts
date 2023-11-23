@@ -36,6 +36,7 @@ import {AuthenticationInterceptor} from "./interceptors/authentication.intercept
 import {ExceptionsService} from "./services/exceptions/exceptions.service";
 import { ExceptionsPipe } from './pipes/exceptions/exceptions.pipe';
 import { ExceptionsTablePipe } from './pipes/exceptions-table/exceptions-table.pipe';
+import {ReverseAlphabeticalPipe} from "./pipes/reverse-alphabetical/reverse-alphabetical.pipe";
 
 @NgModule({
     declarations: [
@@ -56,6 +57,7 @@ import { ExceptionsTablePipe } from './pipes/exceptions-table/exceptions-table.p
         EditionPipe,
         SortPipe,
         ExceptionsPipe,
+        ReverseAlphabeticalPipe,
         ExceptionsTablePipe
     ],
     imports: [

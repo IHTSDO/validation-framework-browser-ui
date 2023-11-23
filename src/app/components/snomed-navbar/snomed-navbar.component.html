@@ -29,7 +29,7 @@
                     {{activeVersion && versions.length ? activeVersion?.version : 'VERSION'}}
                 </a>
                 <div class="dropdown-menu py-0" aria-labelledby="branchDropdown">
-                    <ng-container *ngFor="let version of versions">
+                    <ng-container *ngFor="let version of versions | reverseAlphabetical:'version'">
                         <a class="dropdown-item ps-3" (click)="setVersion(version)">{{version?.version}}</a>
                     </ng-container>
                 </div>
