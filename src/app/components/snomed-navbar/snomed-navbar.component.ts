@@ -69,6 +69,10 @@ export class SnomedNavbarComponent implements OnInit {
                             this.exceptionsService.setExceptions(exceptions);
                         });
                     });
+                } else {
+                    this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
+                        this.exceptionsService.setExceptions(exceptions);
+                    });
                 }
             }
         });
@@ -104,6 +108,10 @@ export class SnomedNavbarComponent implements OnInit {
                 this.pathingService.setVersions(versions);
             });
 
+            this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
+                this.exceptionsService.setExceptions(exceptions);
+            });
+        } else {
             this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
                 this.exceptionsService.setExceptions(exceptions);
             });
