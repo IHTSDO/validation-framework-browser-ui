@@ -8,7 +8,7 @@ export class FilterService {
 
     private textFilter = new Subject();
     private severity = new Subject();
-    private group = new Subject();
+    private group = new BehaviorSubject([]);
     private type = new Subject();
     private additive = new BehaviorSubject(true);
 

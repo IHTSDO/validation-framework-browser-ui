@@ -17,7 +17,7 @@
                 {{activeCodesystem ? activeCodesystem.branchPath : 'VIEW EXCEPTIONS'}}
             </a>
             <div class="dropdown-menu py-0" aria-labelledby="branchDropdown">
-                <ng-container *ngFor="let codesystem of codesystems">
+                <ng-container *ngFor="let codesystem of codesystems | branch:projects">
                     <a class="dropdown-item ps-3" (click)="setCodesystem(codesystem)">{{codesystem?.branchPath}}</a>
                 </ng-container>
             </div>

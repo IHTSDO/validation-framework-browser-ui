@@ -1,14 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import { Subscription } from 'rxjs';
+import {forkJoin, Subscription} from 'rxjs';
 import { User } from '../../models/user';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import {PathingService} from '../../services/pathing/pathing.service';
 import {Location} from '@angular/common';
 import {Codesystem} from "../../models/codesystem";
 import {Version} from "../../models/version";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ReverseAlphabeticalPipe} from "../../pipes/reverse-alphabetical/reverse-alphabetical.pipe";
 import {ExceptionsService} from "../../services/exceptions/exceptions.service";
+import {FilterService} from "../../services/filter/filter.service";
+import {ReleaseService} from "../../services/release/release.service";
 
 @Component({
     selector: 'app-snomed-navbar',
@@ -28,6 +30,8 @@ export class SnomedNavbarComponent implements OnInit {
     codesystemsSubscription: Subscription;
     activeCodesystem: Codesystem;
     activeCodesystemSubscription: Subscription;
+    projects: any;
+    projectsSubscription: Subscription;
 
     versions: Version[];
     versionsSubscription: Subscription;
@@ -38,6 +42,8 @@ export class SnomedNavbarComponent implements OnInit {
                 private pathingService: PathingService,
                 private reverseAlphabeticalPipe: ReverseAlphabeticalPipe,
                 private exceptionsService: ExceptionsService,
+                private filterService: FilterService,
+                private releaseService: ReleaseService,
                 private location: Location,
                 private router: Router) {
         this.environment = window.location.host.split(/[.]/)[0].split(/[-]/)[0];
@@ -45,13 +51,19 @@ export class SnomedNavbarComponent implements OnInit {
         this.codesystemsSubscription = this.pathingService.getCodesystems().subscribe(data => this.codesystems = data);
         this.activeCodesystemSubscription = this.pathingService.getActiveCodesystem().subscribe(data => this.activeCodesystem = data);
         this.versionsSubscription = this.pathingService.getVersions().subscribe(data => this.versions = data);
+        this.projectsSubscription = this.pathingService.getProjects().subscribe(data => this.projects = data);
         this.activeVersionSubscription = this.pathingService.getActiveVersion().subscribe(data => this.activeVersion = data);
+        this.projectsSubscription = this.pathingService.getProjects().subscribe(data => this.projects = data);
     }
 
     ngOnInit() {
         this.path = this.location.path();
 
-        this.pathingService.httpGetCodesystems().subscribe(codesystems => {
+        forkJoin([
+            this.pathingService.httpGetCodesystems(),
+            this.pathingService.httpGetProjects()
+        ]).subscribe(([codesystems, projects]) => {
+            this.pathingService.setProjects(projects);
             this.pathingService.setCodesystems(codesystems);
 
             if (this.findCodesystemFromPath(codesystems)) {
@@ -76,6 +88,36 @@ export class SnomedNavbarComponent implements OnInit {
                 }
             }
         });
+
+        // this.pathingService.httpGetCodesystems().subscribe(codesystems => {
+        //     this.pathingService.setCodesystems(codesystems);
+        //
+        //     if (this.findCodesystemFromPath(codesystems)) {
+        //         this.pathingService.setActiveCodesystem(this.findCodesystemFromPath(codesystems));
+        //
+        //         if (this.findCodesystemFromPath(codesystems).branchPath !== 'MAIN') {
+        //             this.pathingService.httpGetVersions(this.findCodesystemFromPath(codesystems)).subscribe(versions => {
+        //                 this.pathingService.setVersions(versions);
+        //
+        //                 if (this.findVersionFromPath(versions)) {
+        //                     this.pathingService.setActiveVersion(this.findVersionFromPath(versions));
+        //                 }
+        //
+        //                 this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
+        //                     this.exceptionsService.setExceptions(exceptions);
+        //                 });
+        //             });
+        //         } else {
+        //             this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
+        //                 this.exceptionsService.setExceptions(exceptions);
+        //             });
+        //         }
+        //     }
+        // });
+        //
+        // this.pathingService.httpGetProjects().subscribe(projects => {
+        //     this.pathingService.setProjects(projects);
+        // });
     }
 
     findCodesystemFromPath(codesystems: Codesystem[]): Codesystem {

@@ -3,6 +3,7 @@ import {map, Observable, Subject} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Codesystem} from "../../models/codesystem";
 import {Version} from "../../models/version";
+import {Project} from "../../models/project";
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +14,8 @@ export class PathingService {
     private activeCodesystem = new Subject<Codesystem>();
     private versions = new Subject<Version[]>();
     private activeVersion = new Subject<Version>();
+    private projects = new Subject();
+    private activeProject = new Subject();
 
     constructor(private http: HttpClient) {
     }
@@ -61,5 +64,25 @@ export class PathingService {
                 return data.items;
             }
         ));
+    }
+
+    setActiveProject(project) {
+        this.activeProject.next(project);
+    }
+
+    getActiveProject() {
+        return this.activeProject.asObservable();
+    }
+
+    setProjects(projects) {
+        this.projects.next(projects);
+    }
+
+    getProjects() {
+        return this.projects.asObservable();
+    }
+
+    httpGetProjects(): Observable<Project[]> {
+        return this.http.get<Project[]>('/authoring-services/projects?lightweight=true');
     }
 }
