@@ -37,6 +37,10 @@ div.main-view {
 
                     span {
                         color: $bootstrap-dark;
+
+                        &.default {
+                            color: $ghost-grey;
+                        }
                     }
                 }
             }
@@ -126,8 +130,17 @@ app-modal#assertion-modal {
         thead {
             tr {
                 th {
+                    cursor: pointer;
                     font-weight: 500;
-                    font-size: 1.4rem;
+                    font-size: 1.2rem;
+
+                    span {
+                        color: $bootstrap-dark;
+
+                        &.default {
+                            color: $ghost-grey;
+                        }
+                    }
                 }
             }
         }
@@ -135,7 +148,7 @@ app-modal#assertion-modal {
         tbody {
             tr {
                 td {
-                    font-size: 1.4rem;
+                    font-size: 1.2rem;
                 }
             }
         }
