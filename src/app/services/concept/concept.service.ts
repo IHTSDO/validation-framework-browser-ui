@@ -40,7 +40,12 @@ export class ConceptService {
     }
 
     httpBulkGetConcepts(ids: string[]): Observable<any> {
-        return this.http.get<any>('/snowstorm/snomed-ct/' + this.activeCodesystem.branchPath + (this.activeVersion ? '/' + this.activeVersion.version : '') + '/concepts?conceptIds=' + ids.join('&conceptIds=')).pipe(map((data: any) => {
+        const params = {
+            conceptIds: ids,
+            limit: 10000,
+        };
+
+        return this.http.post<any>('/snowstorm/snomed-ct/' + this.activeCodesystem.branchPath + (this.activeVersion ? '/' + this.activeVersion.version : '') + '/concepts/search', params).pipe(map((data: any) => {
             return data.items;
         }));
     }

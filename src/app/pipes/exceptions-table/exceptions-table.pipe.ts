@@ -1,7 +1,8 @@
 import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
-    name: 'exceptionsTable'
+    name: 'exceptionsTable',
+    pure: false
 })
 export class ExceptionsTablePipe implements PipeTransform {
 

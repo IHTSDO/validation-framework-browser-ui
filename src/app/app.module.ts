@@ -79,7 +79,6 @@ import {ReverseAlphabeticalPipe} from "./pipes/reverse-alphabetical/reverse-alph
         ConceptService,
         ReleaseService,
         ExceptionsService,
-        EnvServiceProvider,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: HeaderInterceptor,

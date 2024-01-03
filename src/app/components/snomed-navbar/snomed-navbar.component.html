@@ -22,19 +22,19 @@
                 </ng-container>
             </div>
         </li>
-        <ng-container *ngIf="activeCodesystem?.branchPath !== 'MAIN' && versions">
-            <li class="px-3 py-2 slash">/</li>
-            <li class="nav-item dropdown">
-                <a class="nav-link px-3 py-2 rounded dropdown-toggle text-end" [class.add]="!activeVersion" id="versionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{activeVersion && versions.length ? activeVersion?.version : 'VERSION'}}
-                </a>
-                <div class="dropdown-menu py-0" aria-labelledby="branchDropdown">
-                    <ng-container *ngFor="let version of versions | reverseAlphabetical:'version'">
-                        <a class="dropdown-item ps-3" (click)="setVersion(version)">{{version?.version}}</a>
-                    </ng-container>
-                </div>
-            </li>
-        </ng-container>
+<!--        <ng-container *ngIf="activeCodesystem?.branchPath !== 'MAIN' && versions">-->
+<!--            <li class="px-3 py-2 slash">/</li>-->
+<!--            <li class="nav-item dropdown">-->
+<!--                <a class="nav-link px-3 py-2 rounded dropdown-toggle text-end" [class.add]="!activeVersion" id="versionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                    {{activeVersion && versions.length ? activeVersion?.version : 'VERSION'}}-->
+<!--                </a>-->
+<!--                <div class="dropdown-menu py-0" aria-labelledby="branchDropdown">-->
+<!--                    <ng-container *ngFor="let version of versions | reverseAlphabetical:'version'">-->
+<!--                        <a class="dropdown-item ps-3" (click)="setVersion(version)">{{version?.version}}</a>-->
+<!--                    </ng-container>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--        </ng-container>-->
         <ng-container *ngIf="activeCodesystem">
             <li class="px-3 py-2 clear" (click)="clearExceptions()"><i class="fa-solid fa-xmark"></i></li>
         </ng-container>

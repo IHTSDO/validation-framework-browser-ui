@@ -16,6 +16,10 @@ export class SortPipe implements PipeTransform {
 
         if (sortType === 'desc') {
             items = items.sort(function (a, b) {
+                if (!a[sortKey] || !b[sortKey]) {
+                    return -1;
+                }
+
                 if (a[sortKey].toLowerCase() > b[sortKey].toLowerCase()) {
                     return 1;
                 }
@@ -30,6 +34,10 @@ export class SortPipe implements PipeTransform {
 
         if (sortType === 'asc') {
             items = items.sort(function (a, b) {
+                if (!a[sortKey] || !b[sortKey]) {
+                    return -1;
+                }
+
                 if (a[sortKey].toLowerCase() < b[sortKey].toLowerCase()) {
                     return 1;
                 }

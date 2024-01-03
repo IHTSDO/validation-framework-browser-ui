@@ -59,12 +59,15 @@ export class MainViewComponent implements OnInit {
     codesystems: Codesystem[];
     codesystemsSubscription: Subscription;
 
-    assertionsExceptionsList: any = [];
+    assertionsExceptionsList: any[] = [];
 
     activeAssertion: any;
 
     sortKey: string;
     sortType: string;
+
+    tableSortKey: string;
+    tableSortType: string;
     localAssertions: any;
 
     constructor(private toastr: ToastrService,
@@ -104,10 +107,10 @@ export class MainViewComponent implements OnInit {
         });
 
         this.sortType = 'default';
+        this.tableSortType = 'default';
     }
 
     sortOn(key: string) {
-
         if (this.sortKey === key) {
             this.sortKey = key;
             if (this.sortType === 'default') {
@@ -121,6 +124,23 @@ export class MainViewComponent implements OnInit {
         } else {
             this.sortKey = key;
             this.sortType = 'desc';
+        }
+    }
+
+    tableSortOn(key: string) {
+        if (this.tableSortKey === key) {
+            this.tableSortKey = key;
+            if (this.tableSortType === 'default') {
+                this.tableSortType = 'desc';
+            } else if (this.tableSortType === 'desc') {
+                this.tableSortType = 'asc';
+            } else if (this.tableSortType === 'asc') {
+                this.tableSortType = 'default';
+                this.localAssertions = this.cloneObject(this.assertions);
+            }
+        } else {
+            this.tableSortKey = key;
+            this.tableSortType = 'desc';
         }
     }
 
@@ -148,14 +168,22 @@ export class MainViewComponent implements OnInit {
             let ids = [];
             ids.push(exceptions.map(e => e.conceptId));
 
-            this.conceptService.httpBulkGetConcepts(ids).subscribe(data => {
+            this.conceptService.httpBulkGetConcepts(ids[0]).subscribe(data => {
                 this.assertionsExceptionsList = data;
             });
         }
     }
 
     findExceptionConceptFSN(id): any {
-        return this.assertionsExceptionsList.find(e => e.conceptId === id)?.fsn?.term;
+        console.log('id: ', id);
+        console.log('assertionsExceptionsList: ', this.assertionsExceptionsList);
+
+        if (id && this.assertionsExceptionsList.length) {
+            console.log('id: ', id);
+            console.log('assertionsExceptionsList: ', this.assertionsExceptionsList);
+            console.log('here');
+            return this.assertionsExceptionsList.find(e => e.conceptId === id)?.fsn?.term;
+        }
     }
 
     downloadTSV(): void {
