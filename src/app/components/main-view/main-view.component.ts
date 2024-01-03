@@ -175,13 +175,7 @@ export class MainViewComponent implements OnInit {
     }
 
     findExceptionConceptFSN(id): any {
-        console.log('id: ', id);
-        console.log('assertionsExceptionsList: ', this.assertionsExceptionsList);
-
         if (id && this.assertionsExceptionsList.length) {
-            console.log('id: ', id);
-            console.log('assertionsExceptionsList: ', this.assertionsExceptionsList);
-            console.log('here');
             return this.assertionsExceptionsList.find(e => e.conceptId === id)?.fsn?.term;
         }
     }
