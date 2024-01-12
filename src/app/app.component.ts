@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import 'jquery';
 import { Title } from '@angular/platform-browser';
-import { AuthoringService } from './services/authoring/authoring.service';
 import { BranchingService } from './services/branching/branching.service';
-import { EnvService } from './services/environment/env.service';
 import { ToastrService } from 'ngx-toastr';
 import {StatusPageService} from './services/statusPage/status-page.service';
-import {TerminologyServerService} from './services/terminologyServer/terminology-server.service';
-import {ModalService} from './services/modal/modal.service';
-import {ConceptService} from './services/concept/concept.service';
 
 @Component({
     selector: 'app-root',
@@ -25,9 +20,7 @@ export class AppComponent implements OnInit {
     environment: string;
     scheduledAlerts: any[] = [];
 
-    constructor(private authoringService: AuthoringService,
-                private branchingService: BranchingService,
-                private envService: EnvService,
+    constructor(private branchingService: BranchingService,
                 private toastr: ToastrService,
                 private titleService: Title,
                 private statusService: StatusPageService) {
@@ -35,7 +28,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle('SNOMED CT Validation Framework Browser');
-        this.environment = this.envService.env;
+        this.environment = window.location.host.split(/[.]/)[0].split(/[-]/)[0];
 
         this.branchingService.setBranchPath('MAIN');
         this.assignFavicon();
