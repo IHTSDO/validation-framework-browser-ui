@@ -58,6 +58,10 @@ export class MainViewComponent implements OnInit {
     activeVersionSubscription: Subscription;
     codesystems: Codesystem[];
     codesystemsSubscription: Subscription;
+    projects: any;
+    projectsSubscription: Subscription;
+    exceptionsLoadingOverride: boolean;
+    exceptionsLoadingOverrideSubscription: Subscription;
 
     assertionsExceptionsList: any[] = [];
 
@@ -98,7 +102,9 @@ export class MainViewComponent implements OnInit {
         this.exceptionsSubscription = this.exceptionsService.getExceptions().subscribe(data => this.exceptions = data);
         this.activeCodesystemSubscription = this.pathingService.getActiveCodesystem().subscribe(data => this.activeCodesystem = data);
         this.activeVersionSubscription = this.pathingService.getActiveVersion().subscribe(data => this.activeVersion = data);
+        this.projectsSubscription = this.pathingService.getProjects().subscribe(data => this.projects = data);
         this.codesystemsSubscription = this.pathingService.getCodesystems().subscribe(data => this.codesystems = data);
+        this.exceptionsLoadingOverrideSubscription = this.exceptionsService.getExceptionsLoadingOverride().subscribe(data => this.exceptionsLoadingOverride = data);
     }
 
     ngOnInit(): void {

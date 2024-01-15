@@ -38,6 +38,9 @@ export class SnomedNavbarComponent implements OnInit {
     activeVersion: Version;
     activeVersionSubscription: Subscription;
 
+    exceptionsLoadingOverride: boolean;
+    exceptionsLoadingOverrideSubscription: Subscription;
+
     constructor(private authenticationService: AuthenticationService,
                 private pathingService: PathingService,
                 private reverseAlphabeticalPipe: ReverseAlphabeticalPipe,
@@ -54,6 +57,7 @@ export class SnomedNavbarComponent implements OnInit {
         this.projectsSubscription = this.pathingService.getProjects().subscribe(data => this.projects = data);
         this.activeVersionSubscription = this.pathingService.getActiveVersion().subscribe(data => this.activeVersion = data);
         this.projectsSubscription = this.pathingService.getProjects().subscribe(data => this.projects = data);
+        this.exceptionsLoadingOverrideSubscription = this.exceptionsService.getExceptionsLoadingOverride().subscribe(data => this.exceptionsLoadingOverride = data);
     }
 
     ngOnInit() {
@@ -70,6 +74,7 @@ export class SnomedNavbarComponent implements OnInit {
                 this.pathingService.setActiveCodesystem(this.findCodesystemFromPath(codesystems));
 
                 if (this.findCodesystemFromPath(codesystems).branchPath !== 'MAIN') {
+                    this.exceptionsService.setExceptionsLoadingOverride(false);
                     this.pathingService.httpGetVersions(this.findCodesystemFromPath(codesystems)).subscribe(versions => {
                         this.pathingService.setVersions(versions);
 
@@ -79,45 +84,18 @@ export class SnomedNavbarComponent implements OnInit {
 
                         this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
                             this.exceptionsService.setExceptions(exceptions);
+                            this.exceptionsService.setExceptionsLoadingOverride(true);
                         });
                     });
                 } else {
+                    this.exceptionsService.setExceptionsLoadingOverride(false);
                     this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
                         this.exceptionsService.setExceptions(exceptions);
+                        this.exceptionsService.setExceptionsLoadingOverride(true);
                     });
                 }
             }
         });
-
-        // this.pathingService.httpGetCodesystems().subscribe(codesystems => {
-        //     this.pathingService.setCodesystems(codesystems);
-        //
-        //     if (this.findCodesystemFromPath(codesystems)) {
-        //         this.pathingService.setActiveCodesystem(this.findCodesystemFromPath(codesystems));
-        //
-        //         if (this.findCodesystemFromPath(codesystems).branchPath !== 'MAIN') {
-        //             this.pathingService.httpGetVersions(this.findCodesystemFromPath(codesystems)).subscribe(versions => {
-        //                 this.pathingService.setVersions(versions);
-        //
-        //                 if (this.findVersionFromPath(versions)) {
-        //                     this.pathingService.setActiveVersion(this.findVersionFromPath(versions));
-        //                 }
-        //
-        //                 this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
-        //                     this.exceptionsService.setExceptions(exceptions);
-        //                 });
-        //             });
-        //         } else {
-        //             this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
-        //                 this.exceptionsService.setExceptions(exceptions);
-        //             });
-        //         }
-        //     }
-        // });
-        //
-        // this.pathingService.httpGetProjects().subscribe(projects => {
-        //     this.pathingService.setProjects(projects);
-        // });
     }
 
     findCodesystemFromPath(codesystems: Codesystem[]): Codesystem {
@@ -150,12 +128,16 @@ export class SnomedNavbarComponent implements OnInit {
                 this.pathingService.setVersions(versions);
             });
 
+            this.exceptionsService.setExceptionsLoadingOverride(false);
             this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
                 this.exceptionsService.setExceptions(exceptions);
+                this.exceptionsService.setExceptionsLoadingOverride(true);
             });
         } else {
+            this.exceptionsService.setExceptionsLoadingOverride(false);
             this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
                 this.exceptionsService.setExceptions(exceptions);
+                this.exceptionsService.setExceptionsLoadingOverride(true);
             });
         }
     }
@@ -164,8 +146,10 @@ export class SnomedNavbarComponent implements OnInit {
         this.pathingService.setActiveVersion(version);
         this.router.navigate([this.activeCodesystem.branchPath, version.version]);
 
+        this.exceptionsService.setExceptionsLoadingOverride(false);
         this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
             this.exceptionsService.setExceptions(exceptions);
+            this.exceptionsService.setExceptionsLoadingOverride(true);
         });
     }
 
