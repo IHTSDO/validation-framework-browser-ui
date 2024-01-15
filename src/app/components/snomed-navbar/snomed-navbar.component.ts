@@ -121,20 +121,21 @@ export class SnomedNavbarComponent implements OnInit {
     setCodesystem(codesystem: Codesystem): void {
         this.pathingService.setActiveCodesystem(codesystem);
         this.pathingService.setActiveVersion(undefined);
+        this.pathingService.setVersions(undefined);
         this.router.navigate([codesystem.branchPath]);
+        this.exceptionsService.setExceptions(undefined);
+        this.exceptionsService.setExceptionsLoadingOverride(false);
 
         if (codesystem.branchPath !== 'MAIN') {
             this.pathingService.httpGetVersions(codesystem).subscribe(versions => {
                 this.pathingService.setVersions(versions);
             });
 
-            this.exceptionsService.setExceptionsLoadingOverride(false);
             this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
                 this.exceptionsService.setExceptions(exceptions);
                 this.exceptionsService.setExceptionsLoadingOverride(true);
             });
         } else {
-            this.exceptionsService.setExceptionsLoadingOverride(false);
             this.exceptionsService.httpGetExceptions().subscribe(exceptions => {
                 this.exceptionsService.setExceptions(exceptions);
                 this.exceptionsService.setExceptionsLoadingOverride(true);
