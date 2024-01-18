@@ -1,49 +1,71 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {Project} from '../../models/project';
-import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
+import {map, Observable, Subject} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {Codesystem} from "../../models/codesystem";
+import {Version} from "../../models/version";
+import {Project} from "../../models/project";
 
 @Injectable({
     providedIn: 'root'
 })
 export class PathingService {
 
-    private branches = new Subject();
-    private activeBranch = new Subject();
+    private codesystems = new Subject<Codesystem[]>();
+    private activeCodesystem = new Subject<Codesystem>();
+    private versions = new Subject<Version[]>();
+    private activeVersion = new Subject<Version>();
     private projects = new Subject();
     private activeProject = new Subject();
-    private tasks = new Subject();
-    private activeTask = new Subject();
 
     constructor(private http: HttpClient) {
     }
 
-    // BRANCH
-    setActiveBranch(branch) {
-        this.activeBranch.next(branch);
+    setActiveCodesystem(codesystem: Codesystem): void {
+        this.activeCodesystem.next(codesystem);
     }
 
-    getActiveBranch() {
-        return this.activeBranch.asObservable();
+    getActiveCodesystem(): Observable<Codesystem> {
+        return this.activeCodesystem.asObservable();
     }
 
-    setBranches(branches) {
-        this.branches.next(branches);
+    setCodesystems(codesystems: Codesystem[]): void {
+        this.codesystems.next(codesystems);
     }
 
-    getBranches() {
-        return this.branches.asObservable();
+    getCodesystems(): Observable<Codesystem[]> {
+        return this.codesystems.asObservable();
     }
 
-    httpGetBranches(): Observable<any> {
-        return this.http.get('/snowstorm/snomed-ct/codesystems').pipe(map(data => {
-                return data['items'];
+    httpGetCodesystems(): Observable<Codesystem[]> {
+        return this.http.get('/snowstorm/snomed-ct/codesystems').pipe(map((data: any) => {
+                return data.items;
             }
         ));
     }
 
-    // PROJECT
+    setActiveVersion(version: Version): void {
+        this.activeVersion.next(version);
+    }
+
+    getActiveVersion(): Observable<Version> {
+        return this.activeVersion.asObservable();
+    }
+
+    setVersions(versions: Version[]): void {
+        this.versions.next(versions);
+    }
+
+    getVersions(): Observable<Version[]> {
+        return this.versions.asObservable();
+    }
+
+    httpGetVersions(activeCodesystem: Codesystem): Observable<Version[]> {
+        return this.http.get('/snowstorm/snomed-ct/codesystems/' + activeCodesystem.shortName + '/versions').pipe(map((data: any) => {
+                return data.items;
+            }
+        ));
+    }
+
     setActiveProject(project) {
         this.activeProject.next(project);
     }
@@ -62,26 +84,5 @@ export class PathingService {
 
     httpGetProjects(): Observable<Project[]> {
         return this.http.get<Project[]>('/authoring-services/projects?lightweight=true');
-    }
-
-    // TASK
-    setActiveTask(task) {
-        this.activeTask.next(task);
-    }
-
-    getActiveTask() {
-        return this.activeTask.asObservable();
-    }
-
-    setTasks(tasks) {
-        this.tasks.next(tasks);
-    }
-
-    getTasks() {
-        return this.tasks.asObservable();
-    }
-
-    httpGetTasks(project): Observable<any> {
-        return this.http.get('/authoring-services/projects/' + project.key + '/tasks?lightweight=true');
     }
 }

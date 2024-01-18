@@ -32,6 +32,11 @@ import {TypeFilterPipe} from './pipes/type-filter/type-filter.pipe';
 import {AuthoringPipe} from './pipes/authoring-filter/authoring.pipe';
 import {EditionPipe} from './pipes/edition/edition.pipe';
 import { SortPipe } from './pipes/sort/sort.pipe';
+import {AuthenticationInterceptor} from "./interceptors/authentication.interceptor";
+import {ExceptionsService} from "./services/exceptions/exceptions.service";
+import { ExceptionsPipe } from './pipes/exceptions/exceptions.pipe';
+import { ExceptionsTablePipe } from './pipes/exceptions-table/exceptions-table.pipe';
+import {ReverseAlphabeticalPipe} from "./pipes/reverse-alphabetical/reverse-alphabetical.pipe";
 
 @NgModule({
     declarations: [
@@ -50,7 +55,10 @@ import { SortPipe } from './pipes/sort/sort.pipe';
         TypeFilterPipe,
         AuthoringPipe,
         EditionPipe,
-        SortPipe
+        SortPipe,
+        ExceptionsPipe,
+        ReverseAlphabeticalPipe,
+        ExceptionsTablePipe
     ],
     imports: [
         BrowserModule,
@@ -70,10 +78,15 @@ import { SortPipe } from './pipes/sort/sort.pipe';
         PathingService,
         ConceptService,
         ReleaseService,
-        EnvServiceProvider,
+        ExceptionsService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: HeaderInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthenticationInterceptor,
             multi: true
         }
     ],

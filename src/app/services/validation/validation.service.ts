@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class ValidationService {
 
     constructor() {
+
     }
 
     validateCardinality(input): string {

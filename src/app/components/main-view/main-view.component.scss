@@ -3,7 +3,7 @@
 div.main-view {
     position: absolute;
     top: 5rem;
-    left: 32rem;
+    left: 40rem;
     right: 0;
     bottom: 4rem;
     overflow: scroll;
@@ -22,6 +22,12 @@ div.main-view {
         }
     }
 
+    div.loading {
+        font-weight: 300;
+        font-size: 2rem;
+        color: $river-bed;
+    }
+
     table {
         thead {
             tr {
@@ -31,6 +37,10 @@ div.main-view {
 
                     span {
                         color: $bootstrap-dark;
+
+                        &.default {
+                            color: $ghost-grey;
+                        }
                     }
                 }
             }
@@ -108,6 +118,86 @@ div.main-view {
         }
     }
 }
+
+app-modal#assertion-modal {
+    div.loading {
+        font-weight: 300;
+        font-size: 2rem;
+        color: $river-bed;
+    }
+
+    table {
+        thead {
+            tr {
+                th {
+                    cursor: pointer;
+                    font-weight: 500;
+                    font-size: 1.2rem;
+
+                    span {
+                        color: $bootstrap-dark;
+
+                        &.default {
+                            color: $ghost-grey;
+                        }
+                    }
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    font-size: 1.2rem;
+                }
+            }
+        }
+    }
+}
+
+div#loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 18.8rem);
+
+    .lds-ring {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
+    }
+    .lds-ring div {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border: 4px solid $river-bed;
+        border-radius: 50%;
+        animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        border-color: $river-bed transparent transparent transparent;
+    }
+    .lds-ring div:nth-child(1) {
+        animation-delay: -0.45s;
+    }
+    .lds-ring div:nth-child(2) {
+        animation-delay: -0.3s;
+    }
+    .lds-ring div:nth-child(3) {
+        animation-delay: -0.15s;
+    }
+    @keyframes lds-ring {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}
+
 
 $spring-rain: #95BB95;
 $london-hue: #B695BB;

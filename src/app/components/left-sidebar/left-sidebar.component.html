@@ -9,6 +9,13 @@
     <a class="py-2 px-3 d-block filter" (click)="setSeverity('ERROR')" [class.active]="severity === 'ERROR'">Error</a>
     <div class="header row g-0">
         <h4 class="p-3 mb-0 filter-title">Assertion Group</h4>
+        <span class="clear-span">
+            <div class="form-check form-switch form-check-reverse mb-0">
+                <input class="form-check-input" type="checkbox" role="switch" id="additiveCheck" [checked]="additive" (change)="toggleAdditive()">
+                <label *ngIf="additive" class="form-check-label py-1" for="additiveCheck">Additive</label>
+                <label *ngIf="!additive" class="form-check-label py-1" for="additiveCheck">Subtractive</label>
+            </div>
+        </span>
     </div>
     <ng-container *ngFor="let release of releases | alphabetical:'name'">
         <a class="py-2 px-3 d-block filter" (click)="setGroup(release.name)" [class.active]="groupIncludes(release.name)">

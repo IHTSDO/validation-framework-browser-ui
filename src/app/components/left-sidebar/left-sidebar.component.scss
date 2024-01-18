@@ -2,12 +2,14 @@
 
 nav#sidebar {
     position: fixed;
-    width: 32rem;
+    width: 40rem;
     height: calc(100vh - 90px);
     background: $alto-white;
     overflow: auto;
 
     div.header {
+        position: relative;
+
         h3, h4 {
             border-bottom: 1px $ghost-grey solid;
             height: 4rem;
@@ -34,6 +36,27 @@ nav#sidebar {
                 right: 0.5rem;
                 top: 0.5rem;
             }
+
+            div.form-switch {
+                position: absolute;
+                right: 3rem;
+                top: 0.5rem;
+
+                label {
+                    font-size: 1.4rem;
+                    color: $blumine;
+                    margin-top: 2px;
+                }
+
+                input {
+                    font-size: 2rem;
+
+                    &.form-check-input:checked {
+                        background-color: $cerulean;
+                        border-color: $cerulean;
+                    }
+                }
+            }
         }
     }
 
@@ -45,7 +68,7 @@ nav#sidebar {
         cursor: pointer;
         border-bottom: 1px $ghost-grey solid;
         background-color: lighten($alto-white, 5%);
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         color: $river-bed;
 
         &:hover {
