@@ -16,28 +16,22 @@ export class GroupFilterPipe implements PipeTransform {
 
         if (additive) {
             items = items.filter(item => {
-                if (item.groups) {
-                    return inputFilters.find(element => {
-                        return item.groups.includes(element);
-                    });
-                }
-
-                return [];
+                return inputFilters.find(element => {
+                    if (item.groups?.includes(element)) {
+                        return item;
+                    }
+                });
             });
         } else {
             items = items.filter(item => {
-                if (item.groups) {
-                    return inputFilters.every(element => {
-                        return item.groups.includes(element);
-                    });
-                }
-
-                return [];
+                return inputFilters.every(element => {
+                    if (item.groups?.includes(element)) {
+                        return item;
+                    }
+                });
             });
         }
 
-
         return items;
     }
-
 }
