@@ -3,20 +3,22 @@ import {forkJoin, Subscription} from 'rxjs';
 import { User } from '../../models/user';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import {PathingService} from '../../services/pathing/pathing.service';
-import {Location} from '@angular/common';
+import { Location, NgSwitch, NgSwitchCase, NgSwitchDefault, NgIf, NgFor } from '@angular/common';
 import {Codesystem} from "../../models/codesystem";
 import {Version} from "../../models/version";
-import {ActivatedRoute, Router} from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import {ReverseAlphabeticalPipe} from "../../pipes/reverse-alphabetical/reverse-alphabetical.pipe";
 import {ExceptionsService} from "../../services/exceptions/exceptions.service";
 import {FilterService} from "../../services/filter/filter.service";
 import {ReleaseService} from "../../services/release/release.service";
+import { BranchPipe } from '../../pipes/branch/branch.pipe';
 
 @Component({
     selector: 'app-snomed-navbar',
     templateUrl: './snomed-navbar.component.html',
     styleUrls: ['./snomed-navbar.component.scss'],
-    providers: [ReverseAlphabeticalPipe]
+    providers: [ReverseAlphabeticalPipe],
+    imports: [RouterLink, NgSwitch, NgSwitchCase, NgSwitchDefault, NgIf, NgFor, BranchPipe]
 })
 export class SnomedNavbarComponent implements OnInit {
 

@@ -16,6 +16,13 @@ import {Version} from "../../models/version";
 import {PathingService} from "../../services/pathing/pathing.service";
 import {ConceptService} from "../../services/concept/concept.service";
 import {ExceptionsTablePipe} from "../../pipes/exceptions-table/exceptions-table.pipe";
+import { NgIf, NgFor, UpperCasePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from '../modal/modal.component';
+import { AuthoringPipe } from '../../pipes/authoring-filter/authoring.pipe';
+import { EditionPipe } from '../../pipes/edition/edition.pipe';
+import { SortPipe } from '../../pipes/sort/sort.pipe';
 
 @Component({
     selector: 'app-main-view',
@@ -28,7 +35,8 @@ import {ExceptionsTablePipe} from "../../pipes/exceptions-table/exceptions-table
         TypeFilterPipe,
         ExceptionsPipe,
         ExceptionsTablePipe
-    ]
+    ],
+    imports: [NgIf, FormsModule, NgFor, NgbPopover, ModalComponent, UpperCasePipe, TextFilterPipe, GroupFilterPipe, SeverityFilterPipe, TypeFilterPipe, AuthoringPipe, EditionPipe, SortPipe, ExceptionsPipe, ExceptionsTablePipe]
 })
 export class MainViewComponent implements OnInit {
 

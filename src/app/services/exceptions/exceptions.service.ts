@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, Subject, Subscription} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {PathingService} from "../pathing/pathing.service";
 import {Codesystem} from "../../models/codesystem";
 import {Version} from "../../models/version";
