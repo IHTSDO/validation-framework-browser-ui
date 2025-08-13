@@ -1,43 +1,28 @@
-import {
-    HttpEvent,
-    HttpHandler,
-    HttpInterceptor,
-    HttpRequest,
-    HttpResponse,
-    HttpErrorResponse
-} from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { HttpEvent, HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { map, catchError } from 'rxjs/operators';
-import { UIConfiguration } from '../models/uiConfiguration';
 import { AuthoringService } from '../services/authoring/authoring.service';
 
+export const authenticationInterceptorFn: HttpInterceptorFn = (request, next) => {
 
-@Injectable()
-export class AuthenticationInterceptor implements HttpInterceptor {
+    const authoringService = inject(AuthoringService);
 
-    constructor(private authoringService: AuthoringService) {
-
-    }
-
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        return next.handle(request).pipe(
-            map((event: HttpEvent<any>) => {
-                return event;
-            }),
-            catchError(err => {
-                if (err.status === 403 ) {
-                    let config: any = {};
-                    this.authoringService.getUIConfiguration().subscribe(data => {
-                        config = data;
-                        window.location.href =
+    return next(request).pipe(
+        map((event: HttpEvent<any>) => {
+            return event;
+        }),
+        catchError(err => {
+            if (err.status === 403) {
+                let config: any = {};
+                authoringService.getUIConfiguration().subscribe(data => {
+                    config = data;
+                    window.location.href =
                         config.endpoints.imsEndpoint
                         + 'login?serviceReferer='
                         + window.location.href;
-                    });
-                }
-              throw err;
-            })
-        );
-    }
+                });
+            }
+            throw err;
+        })
+    );
 }
