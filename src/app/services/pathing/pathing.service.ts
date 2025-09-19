@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {map, Observable, Subject} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {Codesystem} from "../../models/codesystem";
 import {Version} from "../../models/version";
 import {Project} from "../../models/project";

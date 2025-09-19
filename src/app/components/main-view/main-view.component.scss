@@ -1,4 +1,5 @@
-@import 'src/variables.scss';
+@use 'src/variables' as *;
+@use "sass:color";
 
 div.main-view {
     position: absolute;
@@ -9,7 +10,7 @@ div.main-view {
     overflow: scroll;
 
     div.top-area {
-        background-color: darken($gallery-white, 5%);
+        background-color: color.adjust($gallery-white, $lightness: -5%);
         border-bottom: 1px solid $alto-white;
 
         input {
@@ -58,7 +59,7 @@ div.main-view {
                         cursor: pointer;
 
                         &:hover {
-                            color: darken($cerulean, 20%);
+                            color: color.adjust($cerulean, $lightness: -20%);
                         }
                     }
 
@@ -69,38 +70,38 @@ div.main-view {
                         cursor: default;
 
                         &.blue {
-                            background-color: lighten($cerulean, 30%);
+                            background-color: color.adjust($cerulean, $lightness: 30%);
                         }
 
                         &.green {
-                            background-color: lighten($fruit-salad, 40%);
+                            background-color: color.adjust($fruit-salad, $lightness: 40%);
                         }
 
                         &.red {
-                            background-color: lighten($mandy, 30%);
+                            background-color: color.adjust($mandy, $lightness: 30%);
                         }
 
                         &.orange {
-                            background-color: lighten($sea-buckthorn, 30%);
+                            background-color: color.adjust($sea-buckthorn, $lightness: 30%);
                         }
 
                         span.prefix {
                             border-radius: 1rem;
 
                             &.blue {
-                                background-color: lighten($cerulean, 20%);
+                                background-color: color.adjust($cerulean, $lightness: 20%);
                             }
 
                             &.green {
-                                background-color: lighten($fruit-salad, 30%);
+                                background-color: color.adjust($fruit-salad, $lightness: 30%);
                             }
 
                             &.red {
-                                background-color: lighten($mandy, 20%);
+                                background-color: color.adjust($mandy, $lightness: 20%);
                             }
 
                             &.orange {
-                                background-color: lighten($sea-buckthorn, 20%);
+                                background-color: color.adjust($sea-buckthorn, $lightness: 20%);
                             }
                         }
                     }
@@ -208,7 +209,7 @@ $dull-lavender: #A0A5E3;
     background-color: $spring-rain;
 
     &:hover {
-        background-color: darken($spring-rain, 10%);
+        background-color: color.adjust($spring-rain, $lightness: -10%);
     }
 }
 
@@ -216,7 +217,7 @@ $dull-lavender: #A0A5E3;
     background-color: $london-hue;
 
     &:hover {
-        background-color: darken($london-hue, 10%);
+        background-color: color.adjust($london-hue, $lightness: -10%);
     }
 }
 
@@ -224,7 +225,7 @@ $dull-lavender: #A0A5E3;
     background-color: $vanilla;
 
     &:hover {
-        background-color: darken($vanilla, 10%);
+        background-color: color.adjust($vanilla, $lightness: -10%);
     }
 }
 
@@ -232,7 +233,7 @@ $dull-lavender: #A0A5E3;
     background-color: $dull-lavender;
 
     &:hover {
-        background-color: darken($dull-lavender, 10%);
+        background-color: color.adjust($dull-lavender, $lightness: -10%);
     }
 }
 
@@ -240,7 +241,7 @@ $dull-lavender: #A0A5E3;
     background-color: $ghost-grey;
 
     &:hover {
-        background-color: darken($ghost-grey, 10%);
+        background-color: color.adjust($ghost-grey, $lightness: -10%);
     }
 }
 
