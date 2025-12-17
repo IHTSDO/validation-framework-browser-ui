@@ -4,14 +4,14 @@ import {ConceptService} from '../../services/concept/concept.service';
 import {ReleaseService} from '../../services/release/release.service';
 import {FilterService} from '../../services/filter/filter.service';
 import {ActivatedRoute} from "@angular/router";
-import { NgIf, NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { AlphabeticalPipe } from '../../pipes/alphabetical/alphabetical.pipe';
 
 @Component({
     selector: 'app-left-sidebar',
     templateUrl: './left-sidebar.component.html',
     styleUrls: ['./left-sidebar.component.scss'],
-    imports: [NgIf, NgFor, AlphabeticalPipe]
+    imports: [CommonModule, AlphabeticalPipe]
 })
 export class LeftSidebarComponent implements OnInit {
 
