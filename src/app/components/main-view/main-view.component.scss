@@ -85,6 +85,14 @@ div.main-view {
                             background-color: color.adjust($sea-buckthorn, $lightness: 30%);
                         }
 
+                        &.grey {
+                            background-color: color.adjust($slate-grey, $lightness: 30%);
+                        }
+
+                        &.mandy {
+                            background-color: color.adjust($mandy, $lightness: 30%);
+                        }
+
                         span.prefix {
                             border-radius: 1rem;
 

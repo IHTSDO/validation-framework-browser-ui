@@ -72,20 +72,34 @@
                             <span *ngIf="assertion.severity && assertion.severity.includes('WARNING')" class="marker orange d-inline-block px-2 m-1">WARNING</span>
                             <span *ngIf="assertion.severity && assertion.severity.includes('ERROR')" class="marker red d-inline-block px-2 m-1">ERROR</span>
 
-                            <ng-container *ngFor="let authoring of releases | authoring">
-                                <span *ngIf="assertion.groups && assertion.groups.includes(authoring.name)" class="marker blue d-inline-block px-2 m-1">{{authoring.name.substr(0, authoring.name.indexOf('-')) | uppercase}}</span>
-                            </ng-container>
-
-                            <span *ngIf="assertion.groups && (assertion.groups | edition).length > 2" class="marker green d-inline-block pe-2 m-1" [ngbPopover]="editionPop" triggers="mouseenter:mouseleave"><span class="prefix green px-2">{{(assertion.groups | edition).length}}</span> EDITIONS...</span>
-                            <ng-template #editionPop>
-                                <ng-container *ngFor="let edition of releases | edition">
-                                    <span *ngIf="assertion.groups && assertion.groups.includes(edition.name)" class="marker green d-inline-block px-2 m-1">{{edition.name.substr(0, edition.name.indexOf('Edition')) | uppercase}}</span>
+                            <span *ngIf="assertion.authoringGroups && assertion.authoringGroups.length > 2" class="marker blue d-inline-block pe-2 m-1" [ngbPopover]="authoringPop" triggers="mouseenter:mouseleave"><span class="prefix green px-2">{{(assertion.editionGroups).length}}</span> AUTHORING...</span>
+                            <ng-template #authoringPop>
+                                <ng-container *ngFor="let group of  assertion.authoringGroups">
+                                    <span *ngIf="assertion.authoringGroups" class="marker blue d-inline-block px-2 m-1">{{group}}</span>
                                 </ng-container>
                             </ng-template>
-
-                            <ng-container *ngFor="let edition of releases | edition">
-                                <span *ngIf="assertion.groups && assertion.groups.length <= 2 && assertion.groups.includes(edition.name)" class="marker green d-inline-block px-2 m-1">{{edition.name.substr(0, edition.name.indexOf('Edition')) | uppercase}}</span>
+                            <ng-container *ngIf="assertion.authoringGroups && assertion.authoringGroups.length <= 2">
+                                <ng-container *ngFor="let group of assertion.authoringGroups">
+                                    <span class="marker blue d-inline-block px-2 m-1">{{group}}</span>
+                                </ng-container>
                             </ng-container>
+
+                            <span *ngIf="assertion.editionGroups && assertion.editionGroups.length > 2" class="marker green d-inline-block pe-2 m-1" [ngbPopover]="editionPop" triggers="mouseenter:mouseleave"><span class="prefix green px-2">{{(assertion.editionGroups).length}}</span> EDITIONS...</span>
+                            <ng-template #editionPop>
+                                <ng-container *ngFor="let group of  assertion.editionGroups">
+                                    <span *ngIf="assertion.editionGroups" class="marker green d-inline-block px-2 m-1">{{group}}</span>
+                                </ng-container>
+                            </ng-template>
+                            <ng-container *ngIf="assertion.editionGroups && assertion.editionGroups.length <= 2">
+                                <ng-container *ngFor="let group of  assertion.editionGroups">
+                                    <span class="marker green d-inline-block px-2 m-1">{{group}}</span>
+                                </ng-container>
+                            </ng-container>
+
+                            <ng-container *ngFor="let group of assertion.otherGroups">
+                                <span class="marker grey d-inline-block px-2 m-1">{{group}}</span>
+                            </ng-container>
+                            <span *ngIf="!assertion.groups || assertion.groups.length === 0" class="marker mandy d-inline-block px-2 m-1">NO GROUPS</span>
                         </td>
                         <td><i *ngIf="assertion.url" class="fas fa-external-link-alt" (click)="goToUrl(assertion)"></i></td>
                     </tr>

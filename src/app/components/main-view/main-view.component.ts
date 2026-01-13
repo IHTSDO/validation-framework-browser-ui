@@ -20,8 +20,6 @@ import { CommonModule, UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '../modal/modal.component';
-import { AuthoringPipe } from '../../pipes/authoring-filter/authoring.pipe';
-import { EditionPipe } from '../../pipes/edition/edition.pipe';
 import { SortPipe } from '../../pipes/sort/sort.pipe';
 
 @Component({
@@ -36,7 +34,7 @@ import { SortPipe } from '../../pipes/sort/sort.pipe';
         ExceptionsPipe,
         ExceptionsTablePipe
     ],
-    imports: [CommonModule, FormsModule, NgbPopover, ModalComponent, UpperCasePipe, TextFilterPipe, GroupFilterPipe, SeverityFilterPipe, TypeFilterPipe, AuthoringPipe, EditionPipe, SortPipe, ExceptionsPipe, ExceptionsTablePipe]
+    imports: [CommonModule, FormsModule, NgbPopover, ModalComponent, UpperCasePipe, TextFilterPipe, GroupFilterPipe, SeverityFilterPipe, TypeFilterPipe, SortPipe, ExceptionsPipe, ExceptionsTablePipe]
 })
 export class MainViewComponent implements OnInit {
 
@@ -98,8 +96,15 @@ export class MainViewComponent implements OnInit {
         this.releasesNotesSubscription = this.releaseService.getReleases().subscribe( data => this.releases = data);
         this.assertionsNotesSubscription = this.releaseService.getAssertions().subscribe( data => {
             this.assertions = data;
+            for (var i = 0; i < this.assertions.length; i++) {
+                if (this.assertions[i].groups) {
+                    this.assertions[i].editionGroups = this.filterAssesrtionGroupsBy(this.assertions[i].groups, ['Edition', '-edition']);
+                    this.assertions[i].authoringGroups = this.filterAssesrtionGroupsBy(this.assertions[i].groups, ['-authoring']);
+                    this.assertions[i].otherGroups = this.assertions[i].groups.filter(g => !this.assertions[i].editionGroups.includes(g) && !this.assertions[i].authoringGroups.includes(g));
+                }
+            }
             if (!this.localAssertions) {
-                this.localAssertions = this.cloneObject(data);
+                this.localAssertions = this.cloneObject(this.assertions);
             }
         });
         this.severityNotesSubscription = this.filterService.getSeverity().subscribe( data => this.severity = data);
@@ -122,6 +127,18 @@ export class MainViewComponent implements OnInit {
 
         this.sortType = 'default';
         this.tableSortType = 'default';
+    }
+
+    filterAssesrtionGroupsBy(groups, partialText: string[]): string [] {
+        if (!groups || groups.length === 0) {
+            return [];
+        }
+        if (!partialText || partialText.length === 0) {
+            return [];
+        }
+        return groups.filter(group => {
+            return partialText.some(text => group.includes(text));
+        });
     }
 
     sortOn(key: string) {
