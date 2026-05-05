@@ -36,6 +36,6 @@ export class ReleaseService {
     }
 
     httpGetAssertions(): Observable<any> {
-        return this.http.get('/rvf/assertions?includeDroolsRules=true&includeTraceabilityAssertions=true&ignoreResourceType=true');
+        return this.http.get('/rvf/assertions?includeDroolsRules=true&includeTraceabilityAssertions=true&ignoreResourceType=true&includeSEPAssertions=true');
     }
 }

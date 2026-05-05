@@ -16,7 +16,7 @@ import {Version} from "../../models/version";
 import {PathingService} from "../../services/pathing/pathing.service";
 import {ConceptService} from "../../services/concept/concept.service";
 import {ExceptionsTablePipe} from "../../pipes/exceptions-table/exceptions-table.pipe";
-import { CommonModule, UpperCasePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '../modal/modal.component';
@@ -34,7 +34,7 @@ import { SortPipe } from '../../pipes/sort/sort.pipe';
         ExceptionsPipe,
         ExceptionsTablePipe
     ],
-    imports: [CommonModule, FormsModule, NgbPopover, ModalComponent, UpperCasePipe, TextFilterPipe, GroupFilterPipe, SeverityFilterPipe, TypeFilterPipe, SortPipe, ExceptionsPipe, ExceptionsTablePipe]
+    imports: [CommonModule, FormsModule, NgbPopover, ModalComponent, TextFilterPipe, GroupFilterPipe, SeverityFilterPipe, TypeFilterPipe, SortPipe, ExceptionsPipe, ExceptionsTablePipe]
 })
 export class MainViewComponent implements OnInit {
 

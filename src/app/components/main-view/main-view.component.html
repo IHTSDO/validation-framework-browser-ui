@@ -32,6 +32,11 @@
                             [class.dull-lavender]="type === 'TRACEABILITY' || type === undefined"
                             [class.ghost-grey]="type !== 'TRACEABILITY' && type !== undefined">TRACEABILITY</button>
                 </div>
+                <div class="col m-2">
+                    <button class="btn w-100" (click)="setType('SEP')"
+                            [class.dull-lavender]="type === 'SEP' || type === undefined"
+                            [class.ghost-grey]="type !== 'SEP' && type !== undefined">SEP ASSERTIONS</button>
+                </div>
             </div>
         </div>
         <!--    <ng-container *ngIf="activeCodesystem">-->
@@ -61,13 +66,13 @@
                         <td [class.spring-rain-border]="assertion.type === 'DROOL_RULES'"
                             [class.london-hue-border]="assertion.type === 'SQL'"
                             [class.vanilla-border]="assertion.type === 'MRCM'"
-                            [class.dull-lavender-border]="assertion.type === 'TRACEABILITY'">
+                            [class.dull-lavender-border]="assertion.type === 'TRACEABILITY' || assertion.type === 'SEP'">
                             {{assertion.uuid}}
                         </td>
                         <td [class.spring-rain-border]="assertion.type === 'DROOL_RULES'"
                             [class.london-hue-border]="assertion.type === 'SQL'"
                             [class.vanilla-border]="assertion.type === 'MRCM'"
-                            [class.dull-lavender-border]="assertion.type === 'TRACEABILITY'">
+                            [class.dull-lavender-border]="assertion.type === 'TRACEABILITY' || assertion.type === 'SEP'">
                             <span class="assertion-text" (click)="openModal('assertion-modal'); activeAssertion = assertion; findAssertionExceptions(assertion.uuid)">{{assertion.assertionText}}</span>
                             <span *ngIf="assertion.severity && assertion.severity.includes('WARNING')" class="marker orange d-inline-block px-2 m-1">WARNING</span>
                             <span *ngIf="assertion.severity && assertion.severity.includes('ERROR')" class="marker red d-inline-block px-2 m-1">ERROR</span>
